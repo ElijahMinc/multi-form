@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Multi Form</title>
+   <!-- <link rel="stylesheet" href="./styles/index.scss"> -->
+</head>
+<body>
+   <div  class="course-form">
+      <form id="course-form"  class="resume__form-content form-content ">
+         <div class="course-form__title">
+            Fill the form to Sign Up for the Linux Administrator/DevOps Course
+         </div>
+         <div class="form-content__body">
+            <div class="stepper">
+               <!--! STEP 1 -->
+               <div class="form__step form__step-active" data-step="1">
+
+                 <fieldset class="fields-block">
+                    <label class="fields-block__input _require _field">
+                          <input type="text" name="first_name" data-first-name maxlength="64" placeholder=" "/>
+                          <span class="fields-block__placeholder">First name</span>
+                          <span class="fields-block__no-valid-message"></span>
+                    </label>
+                 </fieldset>
+
+                 <fieldset class="fields-block">
+                    <label class="fields-block__input _require _field">
+                          <input  type="text" class="form-field" name="last_name" data-last-name maxlength="64" placeholder=" "/>
+                          <span class="fields-block__placeholder">Last Name</span>
+                          <span class="fields-block__no-valid-message"></span>
+                    </label>
+                 </fieldset>
+
+                 <fieldset class="fields-block">
+                    <label class="fields-block__input _require _field">
+                          <input  type="email" class="form-field" name="email" data-email maxlength="256" placeholder=" "/>
+                          <span class="fields-block__placeholder">Email</span>
+                          <span class="fields-block__no-valid-message"></span>
+                    </label>
+                 </fieldset>
+
+                 <fieldset class="fields-block">
+                    <label class="fields-block__input open-placeholder _require _field">
+                          <input id="mobile-number" class="form-field" type="tel" class="tel" data-phone-number name="mobile_phone" maxlength="20"/>
+                          <span class="fields-block__placeholder">Mobile phone</span>
+                          <span class="fields-block__no-valid-message"></span>
+                    </label>
+                 </fieldset>
+
+                 <fieldset class="fields-block">
+                    <label class="fields-block__input open-placeholder _require _field" >
+                       <input id="date-of-birth" class="form-field" type="text" data-date-of-birth name="date_of_birth" placeholder="YYYY.MM.DD"/>
+                       <span class="fields-block__placeholder">Date of birth</span>
+                       <span class="fields-block__no-valid-message"></span>
+                    </label>
+                 </fieldset>
+
+                 <fieldset class="fields-block">
+                    <div id="upload-file" class="fields-block__file-input fields-block__input _require _field">
+                       <div style="width:100%;">
+                          <input id="file" class="form-field" type="file" data-attach-file name="attaching_resume">
+              
+                          <label for="file" class="file__body" data-attach-file-body>
+                             <svg class="staple"  width="30" height="30" viewBox="0 0 15 22" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                   d="M11.8655 1.53847C10.0112 0.420836 7.63232 1.08647 6.56186 3.02207L0.718508 13.5881C-0.762192 16.2655 0.119589 19.7004 2.68404 21.2461C5.2485 22.7917 8.53883 21.8715 10.0195 19.1941L14.9067 10.3571C15.0988 10.0097 14.9847 9.56598 14.6522 9.3656C14.3198 9.16522 13.8946 9.28386 13.7025 9.63127L8.8153 18.4683C7.71836 20.4518 5.27943 21.1342 3.3793 19.9889C1.47918 18.8436 0.825789 16.2974 1.92273 14.3139L7.76609 3.74789C8.453 2.50582 9.9805 2.07854 11.1703 2.79564C12.36 3.51275 12.7693 5.10742 12.0824 6.34949L6.66402 16.147C6.38714 16.6477 5.77124 16.82 5.29167 16.5309C4.81211 16.2419 4.64708 15.5989 4.92396 15.0982L7.68627 10.1034C7.8784 9.75601 7.76424 9.31229 7.43179 9.11192C7.09934 8.91154 6.67417 9.03018 6.48204 9.37759L3.71973 14.3724C3.0593 15.5666 3.45252 17.0986 4.59642 17.7881C5.74031 18.4776 7.20782 18.0671 7.86824 16.8729L13.2866 7.07532C14.3571 5.13972 13.7198 2.65611 11.8655 1.53847Z"
+                                   fill="#00A6EB"/>
+                             </svg>
+                             <div class="file__content">
+                                <span  class="resume__btn-add " data-attach-file-resume-add>
+                                      Attach English CV
+                                   </span>
+                                   <span class="fields-block__file-input__description" data-attach-file-description>
+                                    One file, up to 20
+                                   </span>
+                             </div>
+                             <div class="file-progress__percent" data-attach-file-percent>0%</div>
+                          </label>
+              
+                          <div class="progress-container">
+                             <div class="fields-block__file-input__progress" data-attach-file-progress>
+                                <div class="fields-block__file-input__progress-line" data-attach-file-progress-line>
+              
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+              
+              
+                       <div class="file-actions"> 
+                          <svg class="file-actions__item file-spinner rotating" data-attach-file-spinner width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.73558 4.94092C8.37437 4.94092 7.14636 5.50756 6.27307 6.41919C6.08205 6.6186 5.76554 6.62539 5.56613 6.43437C5.36672 6.24335 5.35992 5.92684 5.55095 5.72743C6.60502 4.62707 8.09059 3.94092 9.73558 3.94092C12.9356 3.94092 15.5297 6.53506 15.5297 9.73509C15.5297 12.9351 12.9356 15.5293 9.73558 15.5293C6.53554 15.5293 3.94141 12.9351 3.94141 9.73509C3.94141 9.45895 4.16526 9.23509 4.44141 9.23509C4.71755 9.23509 4.94141 9.45895 4.94141 9.73509C4.94141 12.3828 7.08783 14.5293 9.73558 14.5293C12.3833 14.5293 14.5297 12.3828 14.5297 9.73509C14.5297 7.08734 12.3833 4.94092 9.73558 4.94092Z" fill="#00A6EB"/>
+                          </svg>
+                          <svg class="file-actions__item file-success-uploaded" data-attach-file-success-uploaded  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                             <path d="M7.96394 10.0625L9.59615 11.6947L12.3942 8.89663M16.125 10.0625C16.125 11.6704 15.4863 13.2124 14.3493 14.3493C13.2124 15.4863 11.6704 16.125 10.0625 16.125C8.45463 16.125 6.9126 15.4863 5.77567 14.3493C4.63873 13.2124 4 11.6704 4 10.0625C4 8.45463 4.63873 6.91261 5.77566 5.77567C6.9126 4.63873 8.45462 4 10.0625 4C11.6704 4 13.2124 4.63873 14.3493 5.77566C15.4863 6.9126 16.125 8.45463 16.125 10.0625Z" stroke="#04AA01" stroke-width="0.932692" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          <svg class="file-actions__item file-cancel-btn" data-attach-file-cancel width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                             <path d="M0.625 9.375L9.375 0.625M9.375 9.375L0.625 0.625" stroke="#2E4454" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                          <svg class="file-actions__item file-trash-btn" data-attach-file-trash width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                             <path fill-rule="evenodd" clip-rule="evenodd" d="M8.71374 2.95157L8.64544 2.95149C8.33979 2.95096 8.05938 2.95047 7.80884 3.049C7.59008 3.13504 7.39643 3.27461 7.24563 3.45494C7.07293 3.66146 6.98472 3.92763 6.88857 4.21777L6.88857 4.21777L6.86705 4.28259L6.70786 4.76017H4.65764H3.45215C3.17601 4.76017 2.95215 4.98403 2.95215 5.26017C2.95215 5.53631 3.17601 5.76017 3.45215 5.76017H4.18618L4.51348 11.3242L4.5145 11.3415C4.55153 11.9711 4.58074 12.4677 4.63048 12.8695C4.68123 13.2794 4.7567 13.6235 4.90126 13.9427C5.28253 14.7845 5.98011 15.4423 6.84289 15.7735C7.17005 15.899 7.51795 15.9542 7.93016 15.9808C8.33412 16.0068 8.8315 16.0068 9.46216 16.0068H9.46219H9.46222H9.46225H9.47958H9.49692H9.49695H9.49698H9.49701C10.1277 16.0068 10.625 16.0068 11.029 15.9808C11.4412 15.9542 11.7891 15.899 12.1163 15.7735C12.9791 15.4423 13.6766 14.7845 14.0579 13.9427C14.2025 13.6235 14.2779 13.2794 14.3287 12.8695C14.3784 12.4677 14.4076 11.9711 14.4447 11.3415L14.4457 11.3242L14.773 5.76017H15.507C15.7832 5.76017 16.007 5.53631 16.007 5.26017C16.007 4.98403 15.7832 4.76017 15.507 4.76017H14.3015H12.2508L12.0916 4.28259L12.0701 4.21777L12.0701 4.21776C11.9739 3.92763 11.8857 3.66146 11.713 3.45494C11.5622 3.27461 11.3686 3.13504 11.1498 3.049C10.8993 2.95047 10.6189 2.95096 10.3132 2.95149L10.2449 2.95157H8.71374ZM11.1967 4.76017L11.1429 4.59882C11.0109 4.20266 10.9803 4.1376 10.9459 4.09645C10.9025 4.04455 10.8468 4.00438 10.7838 3.97961C10.7339 3.95998 10.6625 3.95157 10.2449 3.95157H8.71374C8.29615 3.95157 8.22477 3.95998 8.17484 3.97961C8.11188 4.00438 8.05615 4.04455 8.01275 4.09645C7.97833 4.1376 7.94779 4.20266 7.81573 4.59882L7.76195 4.76017H11.1967ZM5.51176 11.2655L5.18791 5.76017H13.7713L13.4474 11.2655C13.4091 11.9162 13.3816 12.3806 13.3363 12.7466C13.2915 13.1081 13.2328 13.3406 13.147 13.5301C12.8742 14.1324 12.3752 14.6029 11.7579 14.8399C11.5636 14.9144 11.3282 14.9594 10.9646 14.9828C10.5966 15.0066 10.1314 15.0068 9.47958 15.0068C8.8278 15.0068 8.36257 15.0066 7.99453 14.9828C7.63101 14.9594 7.39552 14.9144 7.20124 14.8399C6.584 14.6029 6.08496 14.1324 5.8122 13.5301C5.72635 13.3406 5.66766 13.1081 5.6229 12.7466C5.57759 12.3806 5.55003 11.9162 5.51176 11.2655ZM8.72647 8.27384C8.72647 8.02418 8.52408 7.82178 8.27441 7.82178C8.02475 7.82178 7.82236 8.02418 7.82236 8.27384V12.493C7.82236 12.7427 8.02475 12.9451 8.27441 12.9451C8.52408 12.9451 8.72647 12.7427 8.72647 12.493V8.27384ZM10.6855 7.82178C10.9352 7.82178 11.1376 8.02418 11.1376 8.27384V12.493C11.1376 12.7427 10.9352 12.9451 10.6855 12.9451C10.4359 12.9451 10.2335 12.7427 10.2335 12.493V8.27384C10.2335 8.02418 10.4359 7.82178 10.6855 7.82178Z" fill="#18191A"/>
+                          </svg>
+                       </div>
+                    </div>
+                 </fieldset>
+              
+                 <fieldset class="fields-block">
+                    <div class="fields-block__input _require _field" data-success>
+                       <div class="checkbox">
+                             <input name="agree" class="checkbox-input" type="checkbox" data-checkbox data-checkbox-privacy-policy checked id="privacy-policy-checkbox" class="checkbox-input _req"/>
+                             <label for="privacy-policy-checkbox" class="checkbox-label">I agree to the <a target="_blank" class="privacy-link" href="#">privacy policy</a>.</label>
+                       </div>
+                    </div> 
+                 </fieldset>
+                 <div class="form-content__footer">
+                    <button type="button" class="btn btn_blue" data-btn="next" data-btn-step="1">Next</button>
+                 </div>
+              
+               </div>
+              <!--! END STEP 1 -->
+
+               <!--! STEP 2 -->
+               <div class="form__step" data-step="2">
+                  <fieldset class="fields-block">
+                     <div class="fields-block__select-container">
+                        <div class="fields-block__select english-level-select _require _field">
+                           <div id="english-level-select" class="vscom-custom-select"></div>
+                           <span class="fields-block__no-valid-message"></span>
+                        </div>
+                     </div>
+                  </fieldset>
+           
+                  <fieldset class="fields-block">
+                     <legend>Education</legend>
+                     <div class="fields-block__select-container">
+                        <div class="fields-block__select education-select _require _field">
+                           <div id="education-select" class="vscom-custom-select"></div>
+                           <span class="fields-block__no-valid-message"></span>
+                        </div>
+                     </div>
+                  </fieldset>
+           
+                  <fieldset class="fields-block">
+                     <div class="fields-block-radios _require _field">
+                        <div class="fields-block__radio">
+                           <input id="bachelor" value="3" type="radio" name="degree" class="radio__input">
+                           <label for="bachelor" class="radio__label"><span>Bachelor</span></label>
+                        </div>
+                        <div class="fields-block__radio">
+                           <input id="master" value="1" type="radio" name="degree" class="radio__input">
+                           <label for="master" class="radio__label"><span>Master</span></label>
+                        </div>
+                        <div class="fields-block__radio">
+                           <input id="phd" value="6" type="radio" name="degree" class="radio__input">
+                           <label for="phd" class="radio__label"><span>Ph.D</span></label>
+                        </div>
+                     </div>
+                  </fieldset>
+           
+                  <fieldset class="fields-block">
+                     <div class="fields-block__select-container">
+                        <div class="fields-block__select education-select _require _field">
+                           <div id="year-select" class="vscom-custom-select"></div>
+                           <span class="fields-block__no-valid-message"></span>
+                        </div>
+                     </div>
+                  </fieldset>
+           
+                  <fieldset class="fields-block">
+                     <label class="fields-block__input _require _field">
+                           <input required type="text" class="_req" name="speciality" data-speciality maxlength="128" placeholder=" "/>
+                           <span class="fields-block__placeholder">Speciality</span>
+                           <span class="fields-block__no-valid-message"></span>
+                     </label>
+                  </fieldset>
+           
+           
+           
+              <div class="form-content__footer">
+                 <button type="button" class="btn btn_blue" data-btn="next" data-btn-step="2">Next</button>
+                 <button type="button" class="btn btn_transparent-blue" data-btn="prev">Back</button>
+              </div>
+           
+               </div>
+               <!--! END STEP 2 -->
+
+               <!--!  STEP 3 -->
+               <div class="form__step" data-step="3">
+                  <fieldset class="fields-block">
+                        <legend>Question1</legend>
+      
+                        <div class="fields-block-radios column _require _field">
+                              <div class="fields-block__radio">
+                                    <input id="answer1" value="1" type="radio" name="answer1" class="radio__input">
+                                    <label for="answer1" class="radio__label"><span>Answer 1</span></label>
+                              </div>
+                        </div>
+                  </fieldset>
+                  <fieldset class="fields-block">
+                        <legend>Question1</legend>
+                        <div class="fields-block__textarea _require _field">
+                           <textarea name="answer2" maxlength="4000" placeholder="Your answer"></textarea>
+                        </div>
+                  </fieldset>
+               
+               
+                  <div class="form-content__footer">
+                     <button type="button" class="btn btn_blue" data-btn="submit" data-btn-step="3">Submit</button>
+                     <button type="button" class="btn btn_transparent-blue" data-btn="prev">Back</button>
+                  </div>
+               </div>
+               <!--!  END STEP 3 -->
+            </div>
+         </div>
+      </form>
+      <div id="informations-stepper" class="informations-stepper hide">
+         <div class="informations-stepper__item informations-stepper__item-active" data-is-ok="ok">
+            <div class="informations-stepper__body">
+               <img class="informations-stepper__img" src="./images/course-form-cat-not.png" alt="">
+               <p class="informations-stepper__paragraph">
+                  Please, don’t stop! Just a little bit left to complete the application for enrollment
+               </p>
+            </div>
+            <div class="informations-stepper__footer">
+               <button type="button" class="btn btn_blue" data-btn="continue">Continue</button>
+               <button type="button" class="btn btn_transparent-blue modal-box__btn-close" data-btn="prev">Cancel</button>
+            </div>
+         </div>
+         <div class="informations-stepper__item"   data-is-ok="no">
+            <div class="informations-stepper__body">
+               <img class="informations-stepper__img" style="max-width: 185px;" src="./images/course-form-cat-not.png" alt="">
+               <p class="informations-stepper__paragraph">
+               You have not completed the form entirely... We will contact you shortly and assist you in registering for the course
+               </p>
+            </div>
+         </div>
+   
+         <div class="informations-stepper__item"   data-is-ok="ok">
+            <div class="informations-stepper__body">
+               <img class="informations-stepper__img"  src="./images/course-form-cat-not.png" alt="">
+               <p class="informations-stepper__paragraph">
+               Thank you for registering for the course! Our representative will contact you soon to provide further instructions
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="spinner">
+         <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      </div>   
+   </div>
+   
+   <script type="module" src="./scripts/index.js"></script>
+</body>
+</html>

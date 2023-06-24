@@ -1,0 +1,24 @@
+@import "variables";
+@import "form";
+@import "infromation-stepper";
+@import "components/buttons";
+@import "components/checkbox";
+@import "../../node_modules/virtual-select-plugin/dist/virtual-select.min";
+
+
+html,body{
+   height: 100%;
+
+   font-family:Arial, Helvetica, sans-serif;
+}
+
+*{
+   box-sizing: border-box;
+   padding: 0;
+   margin: 0;
+}
+
+
+.form{
+   
+}

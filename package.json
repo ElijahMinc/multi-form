@@ -1,0 +1,25 @@
+{
+  "name": "multi-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "source": "src/index.html",
+  "scripts": {
+    "dev": "parcel serve -p 3000  --no-cache",
+    "build": "parcel"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.9.2",
+    "parcel": "^2.9.2",
+    "sass": "^1.63.6"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "dependencies": {
+    "idb": "^7.1.1",
+    "imask": "^7.0.1",
+    "intl-tel-input": "^18.1.7",
+    "virtual-select-plugin": "^1.0.39"
+  }
+}

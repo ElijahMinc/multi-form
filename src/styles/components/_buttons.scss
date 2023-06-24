@@ -1,0 +1,575 @@
+
+.btn {
+   position: relative;
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   align-content: center;
+   place-items: center;
+   min-width: 200px;
+   min-height: 46px;
+   padding: 5px 30px;
+   outline: none;
+   border: none;
+   border-radius: 6px;
+   cursor: pointer;
+   z-index: 1;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+ 
+   vertical-align: middle;
+   font-family: $font-family_base;
+   color: $white;
+   font-size: 14px;
+   letter-spacing: 0.1em;
+   line-height: 36px;
+   font-weight: 600;
+   text-align: center;
+   text-transform: uppercase;
+ 
+   &:before {
+     content: '';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 100%;
+     height: 100%;
+     border-radius: inherit;
+     background-color: inherit;
+     z-index: -1;
+ 
+     transition-property: width, height;
+     transition-duration: .15s;
+     transition-timing-function: linear;
+   }
+ 
+   &:hover {
+     &:before {
+       width: calc(100% + 3px);
+       height: calc(100% + 3px);
+     }
+   }
+ 
+   &:disabled {
+     background-color: $very-light-grey;
+   }
+ 
+   &_big {
+     width: 100%;
+     min-height: 80px;
+   }
+ 
+   &_medium {
+     min-height: 60px;
+   }
+ 
+   &_red {
+     background-color: $red;
+   }
+ 
+   &_blue {
+     background-color: $blue;
+   }
+ 
+   &_transparent-blue{
+     color: #03092C;
+     font-weight: 600;
+     border: 1px solid $blue;
+     background-color: $white;
+     transition: .3s;
+ 
+     &:hover{
+       color: $white;
+       background-color: $blue;
+     }
+   }
+ 
+   &_hover_red {
+     &:hover {
+       background-color: $red;
+     }
+   }
+ 
+   &_frame {
+     background-color: transparent;
+ 
+     &:before {
+       width: calc(100% - 2px);
+       height: calc(100% - 2px);
+       border-width: 1px;
+       border-style: solid;
+     }
+   }
+ 
+   &_frame_blue {
+     min-width: 170px;
+     color: $blue;
+     font-weight: 500;
+ 
+     &:before {
+       border-color: $blue;
+     }
+   }
+ }
+ 
+ .btn-secondary {
+   position: relative;
+   display: inline-block;
+   padding-bottom: 5px;
+   outline: none;
+   border: none;
+ 
+   color: inherit;
+   font-family: $font-family_base;
+   font-size: 14px;
+   line-height: 1;
+   letter-spacing: 0.1em;
+   font-weight: 600;
+   text-transform: uppercase;
+ 
+   &:before {
+     content: '';
+     position: absolute;
+     right: 0;
+     bottom: 0;
+     width: 100%;
+     height: 2px;
+     transition: width .2s linear;
+   }
+ 
+   &:hover {
+     &:before {
+       width: 0;
+     }
+   }
+ 
+   &_blue {
+     color: $blue;
+ 
+     &:before {
+       background-color: $blue;
+     }
+   }
+ 
+   &_red {
+     color: $red;
+ 
+     &:before {
+       background-color: $red;
+     }
+   }
+ }
+ 
+ .paired-buttons {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   column-gap: 48px;
+ 
+   @media (max-width: $mobile-max) {
+     flex-direction: column-reverse;
+     row-gap: 24px;
+     width: 100%;
+ 
+     .btn {
+       width: 100%;
+     }
+   }
+ }
+ 
+ .btn-tab {
+   font-weight: 500;
+   font-size: 20px;
+   line-height: 130%;
+   opacity: 0.7;
+   border: none;
+   outline: none;
+   background: transparent;
+   position: relative;
+   padding: 0 0 2px;
+ 
+ 
+   &::before {
+     content: '';
+     display: none;
+     width: 100%;
+     height: 2px;
+     position: absolute;
+     bottom: 0;
+   }
+ 
+   &:hover {
+     opacity: 1;
+   }
+ 
+   &_red {
+     color: $red;
+ 
+     &.active {
+       opacity: 1;
+ 
+       &::before {
+         background: $red;
+         display: inline-block;
+       }
+     }
+   }
+ 
+   &_blue {
+     color: $blue;
+ 
+     &.active {
+       opacity: 1;
+ 
+       &::before {
+         background: $blue;
+         display: inline-block;
+       }
+     }
+   }
+ }
+ 
+ .btn-tab-oval {
+   font-family: $font-family_base;
+   font-weight: 600;
+   font-size: 14px;
+   line-height: 1;
+   text-align: center;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   color: $dark-blue;
+ 
+   border: 1px solid $very-light-grey;
+   outline: none;
+   text-decoration: none;
+   border-radius: 100px;
+   background: transparent;
+   padding: 11px 32px;
+   transition: all .2s linear;
+   display: inline-block;
+ 
+   &_blue {
+     &:hover {
+       border: 1px solid $blue;
+     }
+ 
+     &.active {
+       color: $blue;
+       border: 1px solid $blue;
+     }
+   }
+ 
+   &_red {
+     border: 1px solid $red;
+ 
+     &.active {
+       color: $red;
+       border: 1px solid $red;
+     }
+   }
+ 
+   &_disabled {
+     border: 1px solid $very-light-grey;
+     color: $very-light-grey;
+     cursor: not-allowed;
+   }
+ }
+ 
+ .btn-round {
+   box-sizing: content-box;
+   width: 134px;
+   height: 134px;
+   padding: 3px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+   border: none;
+   outline: none;
+   background-clip: content-box;
+   transition: all .15s linear;
+ 
+   font-family: $font-family_base;
+   color: $white;
+   font-weight: 600;
+   font-size: 14px;
+   line-height: 18px;
+   text-align: center;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+ 
+   &:hover {
+     width: 140px;
+     height: 140px;
+     padding: 0;
+     transition: all .15s linear;
+ 
+     .btn-round__text {
+       padding: 0 15px;
+     }
+   }
+ 
+   &__text {
+     padding: 0 12px;
+     transition: padding 0.15s linear;
+   }
+ 
+   &_red {
+     background-color: $red;
+ 
+    //  &::before {
+    //    background-image: url("../images/icons/arrow-white.svg");
+    //  }
+   }
+ 
+   &::before {
+     content: '';
+     display: inline-block;
+     width: 14px;
+     height: 14px;
+     background-size: contain;
+     background-repeat: no-repeat;
+     position: absolute;
+     bottom: 20px;
+     left: 40px;
+     animation-name: moveArrow;
+     animation-duration: 3s;
+     animation-iteration-count: infinite;
+     animation-timing-function: ease-out;
+   }
+ 
+   &:hover::before {
+     animation-play-state: paused;
+   }
+ }
+ 
+ .btn-round-small {
+   width: 64px;
+   height: 64px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 50%;
+   position: relative;
+ 
+   &_blue {
+     background-color: $blue;
+   }
+ 
+   &_red {
+     background-color: $red;
+   }
+ 
+   &::before {
+     content: "";
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 16px;
+     height: 16px;
+ 
+     background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.22857 6.72725e-07L-6.35888e-07 1.19217e-06L6.77143 8L9.53674e-07 16L5.22857 16L12 8L5.22857 6.72725e-07Z' fill='white'/%3E%3C/svg%3E ");
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+   }
+ 
+   @media (max-width: $mobile-max) {
+     width: 44px;
+     height: 44px;
+ 
+     &::before {
+       width: 11px;
+       height: 11px;
+     }
+   }
+ }
+ 
+ .burger-btn {
+   position: relative;
+   width: 24px;
+   height: 24px;
+   padding: 0;
+   background-color: transparent;
+   border: none;
+   outline: none;
+ 
+   &:before, &:after {
+     content: '';
+     position: absolute;
+     left: 0;
+     width: 100%;
+     height: 2px;
+     background-color: $very-dark-blue;
+     transform-origin: center center;
+     transition: top .15s linear 0.15s, transform .15s linear;
+   }
+ 
+   &:before {
+     top: calc(50% - 6px);
+   }
+ 
+   &:after {
+     top: calc(50% + 4px);
+   }
+ 
+   &_open {
+     &:before, &:after {
+       transition: top .15s linear, transform .15s linear 0.15s;
+     }
+ 
+     &:before {
+       top: calc(50% - 1px);
+       transform: rotate(45deg);
+     }
+ 
+     &:after {
+       top: calc(50% - 1px);
+       transform: rotate(-45deg);
+     }
+   }
+ }
+ 
+ .close-btn {
+   display: inline-block;
+   width: 19px;
+   height: 23px;
+   padding: 0;
+   outline: none;
+   border: none;
+   background-color: transparent;
+   cursor: pointer;
+ 
+   svg {
+     width: 100%;
+     height: 100%;
+   }
+ 
+   &:hover {
+     svg {
+       fill: $red;
+     }
+   }
+ }
+ 
+ .btn-back-to {
+   position: relative;
+   display: inline-block;
+   padding-left: 30px;
+   border: none;
+   background: none;
+   outline: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+ 
+   font-family: $font-family_base;
+   color: $very-dark-blue;
+   font-size: 24px;
+   font-weight: 500;
+   letter-spacing: normal;
+ 
+   @media (max-width: $mobile-max) {
+     font-size: 20px;
+   }
+ 
+   &:before {
+     content: '';
+     position: absolute;
+     left: 4px;
+     top: 50%;
+     transform: translateY(-50%);
+     width: 12px;
+     height: 16px;
+     background-repeat: no-repeat;
+     background-position: center center;
+     background-size: contain;
+    //  background-image: url("../images/icons/arrow-left-dark-blue.svg");
+     transition: all .15s linear;
+   }
+ 
+   &:hover {
+     background: none;
+ 
+     &:before {
+       left: 0;
+     }
+   }
+ 
+   &:active {
+     background: none;
+   }
+ }
+ 
+ .single-tag {
+   border: 1px solid $very-light-grey;
+   border-radius: 100px;
+   font-weight: 400;
+   font-size: 10px;
+   line-height: 100%;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   color: $very-dark-blue;
+   padding: 5px 8px 4px;
+ 
+   &_close-btn {
+     position: relative;
+     padding-right: 24px;
+     cursor: pointer;
+     transition: color .15s linear;
+ 
+     &:after {
+       content: '';
+       position: absolute;
+       top: 50%;
+       right: 8px;
+       transform: translateY(-50%);
+       width: 7px;
+       height: 9px;
+ 
+       background-repeat: no-repeat;
+       background-size: contain;
+       background-position: center;
+       background-image: url("data:image/svg+xml,%3Csvg width='19' height='23' viewBox='0 0 19 23' fill='%23808794' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16L19 0V7L0 23V16Z'%3E%3C/path%3E%3Cpath d='M19 16L0 0V7L19 23V16Z'%3E%3C/path%3E%3C/svg%3E ");
+     }
+   }
+ 
+   &_close-btn_red {
+     &:hover {
+       border-color: rgba($red, 0.3);
+ 
+       &:after {
+         background-image: url("data:image/svg+xml,%3Csvg width='19' height='23' viewBox='0 0 19 23' fill='%23e60036' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16L19 0V7L0 23V16Z'%3E%3C/path%3E%3Cpath d='M19 16L0 0V7L19 23V16Z'%3E%3C/path%3E%3C/svg%3E ");
+       }
+     }
+   }
+ }
+ 
+ .filter-clear-btn {
+   padding: 0;
+   border: none;
+   background: none;
+   outline: none;
+   transition: color .15s linear;
+ 
+   font-family: $font-family_base;
+   color: $very-dark-blue;
+   font-size: 10px;
+   line-height: 1;
+   font-weight: 700;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+   white-space: nowrap;
+ 
+   &:hover, &:active {
+     border: none;
+     background: none;
+     outline: none;
+   }
+ 
+   &_red {
+     &:hover {
+       color: $red;
+     }
+   }
+ }
