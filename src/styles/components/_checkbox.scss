@@ -1,56 +1,56 @@
 .checkbox-container {
-   display: flex;
-   align-items: center;
- }
- 
- .checkbox-label._error {
-   color: #E60036;
- }
- 
- .checkbox-container._error-clickable ._error {
-   border-color: #E60036;
- }
- 
- .checkbox-label {
-   font-family: 'Proba Pro', sans-serif;
-   font-style: normal;
-   font-weight: normal;
-   font-size: 18px;
-   line-height: 24px;
-   color: #0C1628;
-   margin-left: 16px;
-   cursor: pointer;
- }
- 
- .checkbox-input {
-   appearance: none;
-   width: 24px;
-   height: 24px;
-   background-color: #FFFFFF;
-   border: 1px solid rgba(0, 0, 0, 0.1);
-   box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15);
-   cursor: pointer;
-   transition: background-color 0.3s ease;
- }
- 
- .checkbox-input:checked {
-   background-color: #00A6EB;
- }
- 
- .checkbox-input:checked::before {
-   content: '\2713';
-   font-size: 20px;
-   color: #FFFFFF;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   height: 100%;
- }
- 
- .checkbox-input:focus {
-   outline: none;
- }
- 
- .checkbox-input:checked:focus {
-   outline: none;
- }
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label._error {
+  color: #e60036;
+}
+
+.checkbox-container._error-clickable ._error {
+  border-color: #e60036;
+}
+
+.checkbox-label {
+  font-family: 'Proba Pro', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  color: #0c1628;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+.checkbox-input {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.checkbox-input:checked {
+  background-color: #00a6eb;
+}
+
+.checkbox-input:checked::before {
+  content: '\2713';
+  font-size: 20px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.checkbox-input:focus {
+  outline: none;
+}
+
+.checkbox-input:checked:focus {
+  outline: none;
+}

@@ -1,48 +1,46 @@
-.informations-stepper{
-   &__item{
-      display: none;
+.informations-stepper {
+  &__item {
+    display: none;
 
-      &-active{
-         display: block
-      }
-   };
-
-   &__img{
-      margin: 0 auto;
+    &-active {
       display: block;
-   }
+    }
+  }
 
+  &__img {
+    margin: 0 auto;
+    display: block;
+  }
 
-   &__paragraph{
-      font-family: 'Proba Pro';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 24px;
-      line-height: 30px;
-      text-align: center;
+  &__paragraph {
+    font-family: 'Proba Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+    text-align: center;
+  }
 
-   }
+  &__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 100px;
+  }
 
-   &__body{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100%;
-      margin-bottom: 100px;
-   }
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-   &__footer{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-   }
+  &.hide {
+    display: none;
+  }
 
-   &.hide{
-      display: none;
-   }
-
-   .modal-box__btn-close{
-      margin-left: 0;
-   }
+  .modal-box__btn-close {
+    margin-left: 0;
+  }
 }
