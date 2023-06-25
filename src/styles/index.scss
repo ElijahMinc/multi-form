@@ -1,10 +1,12 @@
 @import "variables";
 @import "form";
 @import "infromation-stepper";
+
 @import "components/buttons";
 @import "components/checkbox";
+@import "components/spinner";
 @import "../../node_modules/virtual-select-plugin/dist/virtual-select.min";
-
+@import '../../node_modules/intl-tel-input/build/css/intlTelInput.min.css';
 
 html,body{
    height: 100%;
