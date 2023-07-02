@@ -18,13 +18,14 @@ $additional-color-9: #00aeec;
 $additional-color-10: rgba(0, 174, 236, 0.12);
 $additional-color-11: #f5f9fb;
 /* ===== fonts =====*/
-$font-family-1: 'Montserrat', sans-serif;
-$font-family-2: 'Proba Pro', sans-serif;
 
-.course-form {
+.form {
   position: relative;
 
   padding: 35px 45px 41px 45px;
+  border: 1px solid $additional-color-4;
+  border-radius: 10px;
+
   @media (max-width: $mobile-max) {
     padding: 41px 20px 42px 20px;
   }
@@ -48,7 +49,6 @@ $font-family-2: 'Proba Pro', sans-serif;
     }
   }
   &__title {
-    font-family: 'Proba Pro';
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
@@ -131,7 +131,6 @@ $font-family-2: 'Proba Pro', sans-serif;
       font-weight: 400;
       border-radius: 4px;
       color: #0c1628;
-      font-family: $font-family-2;
       padding: 20px 23px 18px 23px;
       border: 1px solid $default-color;
       &::placeholder {
@@ -172,7 +171,6 @@ $font-family-2: 'Proba Pro', sans-serif;
       background-position: 0 1px;
       background-size: 12px 12px;
       color: #00a6eb;
-      font-family: $font-family-2;
       background-repeat: no-repeat;
       background-color: transparent;
 
@@ -198,7 +196,6 @@ $font-family-2: 'Proba Pro', sans-serif;
       border-radius: 4px;
       align-items: center;
       color: $additional-color-1;
-      font-family: $font-family-2;
       padding: 16px 16px 14px 16px;
       border: 1px solid $default-color;
       &:after {
@@ -316,7 +313,6 @@ $font-family-2: 'Proba Pro', sans-serif;
       }
 
       &__label {
-        font-family: $font-family-2;
         font-size: 14px;
       }
       &__placeholder {
@@ -330,7 +326,6 @@ $font-family-2: 'Proba Pro', sans-serif;
         transition: all 0.2s;
         transform-origin: 0 0;
         color: $additional-color-2;
-        font-family: $font-family-2;
         font-weight: 400;
         @media (max-height: $xxh) {
           //   top: 11px;
@@ -614,7 +609,6 @@ $font-family-2: 'Proba Pro', sans-serif;
         font-size: 12px;
         font-weight: 400;
         color: $additional-color-5;
-        font-family: $font-family-1;
         @media (max-height: $xsh) {
           margin-top: 0;
         }
@@ -836,7 +830,6 @@ $font-family-2: 'Proba Pro', sans-serif;
           font-size: 12px;
           font-weight: 400;
           color: $additional-color-3;
-          font-family: $font-family-1;
         }
 
         .progress-container {
@@ -941,7 +934,6 @@ $font-family-2: 'Proba Pro', sans-serif;
           font-weight: 500;
           padding-right: 10px;
           color: $additional-color-9;
-          font-family: $font-family-1;
         }
         &__file-name {
           margin-right: 5px;

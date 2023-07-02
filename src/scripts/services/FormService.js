@@ -1,5 +1,6 @@
-export class Form {
+export class FormService {
   static NO_VALID_CLASS = 'no-valid';
+  static FORM_HIDE_CLASS = 'hide';
 
   options = {
     initFormData: null,
@@ -21,17 +22,22 @@ export class Form {
     this.options = options;
 
     this.#setupForm();
+
+    console.log('this.options.initFormData', this.options.initFormData);
+    if (this.options.initFormData) {
+      this.initForm(this.options.initFormData);
+    }
   }
 
-  getRequireFieldBlock(input) {
+  static getRequireFieldBlock(input) {
     if (input.classList.contains('_require')) return input;
 
     const requireFieldBlock = input.closest('._require');
     return requireFieldBlock;
   }
 
-  setSuccessRequire(input) {
-    const fieldBlock = this.getRequireFieldBlock(input);
+  static setSuccessRequire(input) {
+    const fieldBlock = FormService.getRequireFieldBlock(input);
     if (!fieldBlock) return;
 
     fieldBlock.setAttribute('data-success', '');
@@ -72,43 +78,43 @@ export class Form {
     return file.size > validMb * 1024 * 1024 || file.size === 0;
   }
 
-  removeSuccessRequire(input) {
-    const fieldBlock = this.getRequireFieldBlock(input);
+  static removeSuccessRequire(input) {
+    const fieldBlock = FormService.getRequireFieldBlock(input);
     if (!fieldBlock) return;
 
     fieldBlock.removeAttribute('data-success');
   }
 
-  cancelError(input) {
-    const fieldBlock = this.getRequireFieldBlock(input);
+  static cancelError(input) {
+    const fieldBlock = FormService.getRequireFieldBlock(input);
     if (!fieldBlock) return;
 
     const errorMessage = fieldBlock.querySelector(
       '.fields-block__no-valid-message'
     );
 
-    if (fieldBlock.classList.contains(Form.NO_VALID_CLASS)) {
-      fieldBlock.classList.remove(Form.NO_VALID_CLASS);
+    if (fieldBlock.classList.contains(FormService.NO_VALID_CLASS)) {
+      fieldBlock.classList.remove(FormService.NO_VALID_CLASS);
     }
 
-    this.setSuccessRequire(input);
+    FormService.setSuccessRequire(input);
 
     if (!errorMessage) return;
     errorMessage.style.display = 'none';
   }
 
-  setError(input, messageError) {
-    const fieldBlock = this.getRequireFieldBlock(input);
+  static setError(input, messageError) {
+    const fieldBlock = FormService.getRequireFieldBlock(input);
     if (!fieldBlock) return;
 
     const errorMessage = fieldBlock.querySelector(
       '.fields-block__no-valid-message'
     );
 
-    if (fieldBlock.classList.contains(Form.NO_VALID_CLASS)) return;
+    if (fieldBlock.classList.contains(FormService.NO_VALID_CLASS)) return;
 
-    fieldBlock.classList.add(Form.NO_VALID_CLASS);
-    this.removeSuccessRequire(input);
+    fieldBlock.classList.add(FormService.NO_VALID_CLASS);
+    FormService.removeSuccessRequire(input);
 
     if (!errorMessage) return;
 
@@ -120,13 +126,42 @@ export class Form {
     return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
   }
 
+  hide() {
+    this.$form.classList.add(FormService.FORM_HIDE_CLASS);
+  }
+
+  show() {
+    this.$form.classList.remove(FormService.FORM_HIDE_CLASS);
+  }
+
+  static hideFormById(formId) {
+    const form = document.querySelector(`#${formId}`);
+    if (!form) return;
+
+    form.classList.add(FormService.FORM_HIDE_CLASS);
+  }
+
+  static showFormById(formId) {
+    const form = document.querySelector(`#${formId}`);
+    if (!form) return;
+
+    form.classList.remove(FormService.FORM_HIDE_CLASS);
+  }
+
+  static toggleShowHideFormById(formId) {
+    const form = document.querySelector(`#${formId}`);
+    if (!form) return;
+
+    form.classList.toggle(FormService.FORM_HIDE_CLASS);
+  }
+
   validateFields(inputs) {
     let error = 0;
 
     let errorMessage = '';
 
     inputs.forEach((input) => {
-      this.cancelError(input);
+      FormService.cancelError(input);
 
       if (!input.value.length) {
         ++error;
@@ -134,7 +169,7 @@ export class Form {
       }
 
       if (input.type === 'radio') {
-        const wrapperContainer = this.getRequireFieldBlock(input);
+        const wrapperContainer = FormService.getRequireFieldBlock(input);
         const isSomeoneChecked = Array.from(
           wrapperContainer.querySelectorAll('input')
         ).some((input) => input.checked);
@@ -151,7 +186,7 @@ export class Form {
           errorMessage = 'Invalid email';
         }
 
-        if (Form.emailTest(input)) {
+        if (FormService.emailTest(input)) {
           ++error;
           errorMessage = 'Invalid email';
         }
@@ -163,10 +198,10 @@ export class Form {
         if (!file) {
           ++error;
           errorMessage = '';
-        } else if (Form.isInvalidFormat(file)) {
+        } else if (FormService.isInvalidFormat(file)) {
           ++error;
           errorMessage = 'Invalid format';
-        } else if (Form.isInvalidSize(file)) {
+        } else if (FormService.isInvalidSize(file)) {
           ++error;
           errorMessage = 'File is too large';
         }
@@ -226,80 +261,76 @@ export class Form {
   handleValidateInput(input) {
     const { error, errorMessage } = this.validateFields([input]);
 
-    !!error ? this.setError(input, errorMessage) : this.cancelError(input);
+    !!error
+      ? FormService.setError(input, errorMessage)
+      : FormService.cancelError(input);
 
     return { error, errorMessage };
   }
 
-  initForm(initData, initCallback) {
+  initForm(fieldBlock, initData) {
     if (!initData) return;
 
-    // const fieldBlocks = this.getAllFieldsByStep(step);
+    let input = fieldBlock.querySelector('input');
 
-    // fieldBlocks.forEach(fieldBlock => {
+    if (fieldBlock.classList.contains('fields-block__textarea')) {
+      input = fieldBlock.querySelector('textarea');
+    }
 
-    //       let input = fieldBlock.querySelector('input');
+    if (!input) return;
 
-    //       if(fieldBlock.classList.contains('fields-block__textarea')){
-    //             input = fieldBlock.querySelector('textarea')
-    //       }
+    const inputName = input.name;
 
-    //       if(!input) return;
+    const valueFromInitDataByInputName = initData?.[inputName] || '';
 
-    //       const inputName = input.name;
+    if (!valueFromInitDataByInputName) return;
 
-    //       const valueFromInitDataByInputName = initData?.[inputName] || ''
+    if (input.classList.contains('vscomp-hidden-input')) {
+      const vcCompCustomSelect = input.closest('.vscom-custom-select');
+      vcCompCustomSelect.setValue(valueFromInitDataByInputName);
+      FormService.setSuccessRequire(input);
 
-    //       if(!valueFromInitDataByInputName) return;
+      this.options?.setValueOnInit(input);
+      return;
+    }
 
-    //       if(input.classList.contains('vscomp-hidden-input')){
-    //             const vcCompCustomSelect = input.closest('.vscom-custom-select');
-    //             vcCompCustomSelect.setValue(valueFromInitDataByInputName);
-    //             MultiForm.setSuccessRequire(input);
+    if (input.type === 'tel') {
+      this.options?.setValueOnInit(input, valueFromInitDataByInputName);
+      FormService.setSuccessRequire(input);
+      return;
+    }
 
-    //             this.options?.setValueOnInit(input);
-    //             return;
-    //       }
+    if (input.type === 'file') {
+      this.options?.setValueOnInit(input);
+      //! INIT FILE
+      return;
+    }
 
-    //       if(input.type === 'tel'){
-    //          this.options?.setValueOnInit(input, valueFromInitDataByInputName);
-    //          MultiForm.setSuccessRequire(input);
-    //          return;
-    //       }
+    const inputByName = this.$form.querySelectorAll(`[name="${inputName}"`);
+    console.log('inputByName', inputByName);
 
-    //       if(input.type === 'file') {
-    //          this.options?.setValueOnInit(input);
-    //          //! INIT FILE
-    //          return;
-    //       }
+    if (inputByName.length === 1) {
+      inputByName[0].value = valueFromInitDataByInputName;
+      this.options?.setValueOnInit(input);
+      FormService.setSuccessRequire(input);
 
-    //       const inputByName = this.$form.querySelectorAll(`[name="${inputName}"`);
-    //       console.log('inputByName', inputByName)
+      return;
+    }
 
-    //       if(inputByName.length === 1){
-    //          inputByName[0].value = valueFromInitDataByInputName;
-    //          this.options?.setValueOnInit(input);
-    //          MultiForm.setSuccessRequire(input);
+    if (inputByName.length > 1) {
+      const inputs = inputByName;
+      const isRadio = inputs[0].type === 'radio';
 
-    //          return;
-    //       }
-
-    //       if(inputByName.length > 1){
-    //          const inputs = inputByName;
-    //          const isRadio = inputs[0].type === 'radio';
-
-    //          if(isRadio){
-    //             inputs.forEach(inp => {
-    //                if(inp.value === valueFromInitDataByInputName){
-    //                   inp.checked = true
-    //                   MultiForm.setSuccessRequire(inp);
-    //                }
-    //             })
-    //          }
-    //          return;
-    //       }
-
-    // });
+      if (isRadio) {
+        inputs.forEach((inp) => {
+          if (inp.value === valueFromInitDataByInputName) {
+            inp.checked = true;
+            FormService.setSuccessRequire(inp);
+          }
+        });
+      }
+      return;
+    }
   }
 
   #setupForm() {

@@ -1,4 +1,4 @@
-export class AttachFile {
+export class AttachFileService {
   NO_VALID_CLASS = 'no-valid';
   ATTACH_FILE_LABEL_TEXT_CONTENT = 'One file, up to 20 mb';
 

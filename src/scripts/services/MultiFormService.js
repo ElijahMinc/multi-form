@@ -1,6 +1,6 @@
-import { Form } from './Form';
+import { FormService } from './FormService';
 
-export class MultiForm extends Form {
+export class MultiFormService extends FormService {
   ACTIVE_FORM_STEP_CLASS = 'form__step-active';
   ACTIVE_PROGRESS_STEP_CLASS = 'progressbar-step-active';
 
@@ -28,12 +28,16 @@ export class MultiForm extends Form {
     super(formId, {
       handleSubmit,
       setValueOnInit,
+      initFormData: null, // because we use initMultiForm
     });
 
+    if (!this.$form) return;
+
     this.$steps = [...this.$form.querySelectorAll('[data-step]')];
+
     this.$progressSteps = [...this.$form.querySelectorAll('.progressbar-step')];
     this.$stepper = this.$form.querySelector('.stepper');
-    this.options = { ...restMultiFormOptions };
+    this.options = { ...restMultiFormOptions, handleSubmit, setValueOnInit };
 
     this.currentStep =
       this.options?.currentStep ??
@@ -47,6 +51,10 @@ export class MultiForm extends Form {
     }
 
     this.#setupMultiForm();
+
+    if (options.initFormData) {
+      this.initMultiForm(options.initFormData);
+    }
   }
 
   renderSteps() {
@@ -135,13 +143,12 @@ export class MultiForm extends Form {
         const inputValue = input.value;
 
         if (input.type === 'radio') {
-          console.log('input', input);
           const fieldBlock = input.closest('._field');
           const radios = fieldBlock.querySelectorAll('input');
           const checkedRadio = Array.from(radios).find(
             (radio) => radio.checked
           );
-
+          console.log('checkedRadio', checkedRadio);
           const isSetValueEnabled = validateCb(inputName, checkedRadio.value);
 
           if (!isSetValueEnabled) return;
@@ -175,7 +182,7 @@ export class MultiForm extends Form {
           );
           console.log('isCustomValid', isCustomSetValueEnabled);
           return isCustomSetValueEnabled ?? true;
-        } catch (er) {
+        } catch (err) {
           // or we can THROW error
           return false;
         }
@@ -199,14 +206,11 @@ export class MultiForm extends Form {
 
     if (submitBtn) {
       const { isValid, data } = await getValuesByStep(this.currentStep);
-
+      console.log(isValid, data);
       if (!isValid) return;
-      //?? CALLBACK
+      console.log(this.options);
+      await this.options.handleSubmit?.(data, this.currentStep);
 
-      this.options.handleSubmit?.(data, this.currentStep);
-      //  const userData = userFromSession ? {...userFromSession, ...userInfoData} : userInfoData;
-
-      //  await userInfoIndexedDb.set('info', userData);
       return;
     }
 
@@ -214,15 +218,8 @@ export class MultiForm extends Form {
       const { isValid, data } = await getValuesByStep(this.currentStep);
 
       if (!isValid) return;
-      //?? CALLBACK
-      await this.options.handleSuccessNextStep?.(data, this.currentStep);
-      //  const userData = userFromSession ? {...userFromSession, ...userInfoData} : userInfoData;
-      //  await userInfoIndexedDb.set('info', userData);
 
-      //  localStorage.setItem(`COURSE_FORM_STEP-${window.location.pathname}`, JSON.stringify({
-      //      created_date: Date.now(),
-      //      step: currentStep + 1
-      //  }));
+      await this.options.handleSuccessNextStep?.(data, this.currentStep);
 
       incrementor = 1;
     }
@@ -251,6 +248,17 @@ export class MultiForm extends Form {
     }
 
     return checkRequiredFieldsByCurrentStep();
+  }
+
+  initMultiForm(initData, initCallback) {
+    if (!initData) return;
+
+    this.$steps.forEach((_, formIdx) => {
+      const step = formIdx + 1;
+      const fieldBlocks = this.getAllFieldsByStep(step);
+
+      fieldBlocks.forEach((fieldBlock) => this.initForm(fieldBlock, initData));
+    });
   }
 
   #setupMultiForm() {

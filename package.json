@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "source": "src/index.html",
   "scripts": {
-    "dev": "parcel serve -p 3000  --no-cache",
+    "dev": "parcel serve ./src/index.html --no-cache",
+    "mvc": "parcel serve ./mvc/mvc.html --no-cache",
     "build": "parcel",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
