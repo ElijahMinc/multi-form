@@ -6,6 +6,18 @@ export class FormService {
     initFormData: null,
     handleSubmit: async (formData, currentStep) => {},
     setValueOnInit: (input, valueFromInitData) => {},
+    customValidateFields: (
+      input,
+      options = {
+        isNotRequiredButMustValidate: false,
+        configurationErrorHandling: {
+          isEmpty: true,
+          error: 0,
+          invalidField: false,
+          errorMessage: '',
+        },
+      }
+    ) => {},
   };
 
   constructor(
@@ -13,6 +25,18 @@ export class FormService {
     options = {
       handleSubmit: async (formData, currentStep) => {},
       setValueOnInit: (input, valueFromInitData) => {},
+      customValidateFields: (
+        input,
+        options = {
+          isNotRequiredButMustValidate: false,
+          configurationErrorHandling: {
+            isEmpty: true,
+            error: 0,
+            invalidField: false,
+            errorMessage: '',
+          },
+        }
+      ) => {},
       initFormData: null,
     }
   ) {
@@ -23,7 +47,6 @@ export class FormService {
 
     this.#setupForm();
 
-    console.log('this.options.initFormData', this.options.initFormData);
     if (this.options.initFormData) {
       this.initForm(this.options.initFormData);
     }
@@ -45,33 +68,16 @@ export class FormService {
 
   static isInvalidFormat(file, validFormats) {
     const formats = validFormats || [
-      'application/x-dosexec',
-      'application/x-httpd-php',
-      'application/macbinary',
-      'application/javascript',
-      'application/postscript',
-      'application/x-msdownload',
-      'application/x-sql',
-      'application/sql',
-      'application/octet-stream',
-      'application/xml',
-      'application/bat',
-      'application/x-bat',
-      'application/x-msdos-program',
-      'application/x-python-code',
-      'chemical/x-cmdf',
-      'text/html',
-      'text/x-script.phyton',
-      'text/javascript',
-      'text/x-python-script',
-      'text/x-python',
-      'text/sql',
-      'text/x-sql',
-      'text/x-php',
-      'text/asp',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'application/msword',
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain',
     ];
 
-    return formats.includes(file.type);
+    return !formats.includes(file.type);
   }
 
   static isInvalidSize(file, validMb = 20) {
@@ -123,7 +129,9 @@ export class FormService {
   }
 
   static emailTest(input) {
-    return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
+    return !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+      input.value
+    );
   }
 
   hide() {
@@ -156,114 +164,141 @@ export class FormService {
   }
 
   validateFields(inputs) {
-    let error = 0;
-
-    let errorMessage = '';
+    const configurationErrorHandling = {
+      errors: 0,
+      isEmpty: false,
+      invalidField: null,
+      errorMessage: '',
+    };
 
     inputs.forEach((input) => {
       FormService.cancelError(input);
 
-      if (!input.value.length) {
-        ++error;
-        errorMessage = 'Required field';
+      const isNotRequiredButMustValidate =
+        input.classList.contains('_validate') || !input.closest('._require');
+
+      if (!input.value.length && !isNotRequiredButMustValidate) {
+        configurationErrorHandling.errors = ++configurationErrorHandling.errors;
+        configurationErrorHandling.isEmpty = true;
+        configurationErrorHandling.errorMessage = 'Required field';
+      }
+
+      if (!input.value && isNotRequiredButMustValidate) {
+        configurationErrorHandling.errorMessage = '';
+        configurationErrorHandling.errors = 0;
       }
 
       if (input.type === 'radio') {
         const wrapperContainer = FormService.getRequireFieldBlock(input);
+
+        if (!wrapperContainer) return;
+
         const isSomeoneChecked = Array.from(
           wrapperContainer.querySelectorAll('input')
         ).some((input) => input.checked);
 
-        if (!isSomeoneChecked) {
-          ++error;
-          errorMessage = '';
+        if (!isSomeoneChecked && !isNotRequiredButMustValidate) {
+          configurationErrorHandling.isEmpty = true;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = '';
         }
       }
 
       if (input.type === 'email') {
-        if (!input.value.length) {
-          ++error;
-          errorMessage = 'Invalid email';
+        if (FormService.emailTest(input)) {
+          configurationErrorHandling.isEmpty = false;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = 'Invalid email';
         }
 
-        if (FormService.emailTest(input)) {
-          ++error;
-          errorMessage = 'Invalid email';
+        if (!input.value.length && !isNotRequiredButMustValidate) {
+          configurationErrorHandling.isEmpty = true;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = 'Required field';
         }
       }
 
       if (input.type === 'file') {
         const file = input.files[0];
-
         if (!file) {
-          ++error;
-          errorMessage = '';
+          configurationErrorHandling.isEmpty = true;
+        }
+
+        if (!file && !isNotRequiredButMustValidate) {
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = '';
         } else if (FormService.isInvalidFormat(file)) {
-          ++error;
-          errorMessage = 'Invalid format';
+          configurationErrorHandling.isEmpty = false;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = 'Invalid format';
         } else if (FormService.isInvalidSize(file)) {
-          ++error;
-          errorMessage = 'File is too large';
+          configurationErrorHandling.isEmpty = false;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = 'File is too large';
         }
       }
 
-      if (input.type === 'text' && !input.matches('[data-date-of-birth]')) {
-        if (!input.value.length) {
-          ++error;
-          errorMessage = 'Required field';
-        }
-      }
-
-      if (input.matches('[data-date-of-birth]')) {
-        const currentDate = new Date();
-        const minDate = new Date('1952-12-01');
-
-        const selectedDate = input.value;
-
-        if (selectedDate.length !== 10) {
-          ++error;
-          errorMessage = 'Required field';
-        }
-
-        if (
-          new Date(selectedDate) > currentDate ||
-          new Date(selectedDate) < minDate
-        ) {
-          ++error;
-          errorMessage = 'Invalid date of birth';
-        }
-      }
-
-      if (input.type === 'tel') {
-        const phoneValue = input.value;
-        if (phoneValue.includes('_')) {
-          ++error;
-          errorMessage = 'Invalid phone';
-        }
-      }
-
-      if (
-        input.type === 'checkbox' ||
-        input.matches('[data-checkbox-privacy-policy]')
-      ) {
-        const isChecked = input.checked;
-
-        if (!isChecked) {
-          ++error;
-          errorMessage = '';
-        }
+      if (!!this.options?.customValidateFields) {
+        this.options?.customValidateFields(input, {
+          isNotRequiredButMustValidate,
+          configurationErrorHandling,
+        });
       }
     });
+    return {
+      error: configurationErrorHandling.errors,
+      errorMessage: configurationErrorHandling.errorMessage,
+      isEmpty: configurationErrorHandling.isEmpty,
+    };
+  }
 
-    return { error, errorMessage };
+  static setEmpty(input) {
+    let fieldBlock = FormService.getRequireFieldBlock(input);
+
+    if (!fieldBlock) {
+      let validatedFieldInAnyCase = FormService.getValidateFieldBlock(input);
+
+      fieldBlock = validatedFieldInAnyCase;
+    }
+
+    if (!fieldBlock) return;
+
+    fieldBlock.setAttribute('data-empty', '');
+  }
+
+  static notEmpty(input) {
+    let fieldBlock = FormService.getRequireFieldBlock(input);
+
+    if (!fieldBlock) {
+      let validatedFieldInAnyCase = FormService.getValidateFieldBlock(input);
+
+      fieldBlock = validatedFieldInAnyCase;
+    }
+
+    if (!fieldBlock) return;
+
+    fieldBlock.removeAttribute('data-empty');
   }
 
   handleValidateInput(input) {
-    const { error, errorMessage } = this.validateFields([input]);
+    const { error, errorMessage, isEmpty } = this.validateFields([input]);
 
     !!error
       ? FormService.setError(input, errorMessage)
       : FormService.cancelError(input);
+
+    isEmpty ? FormService.setEmpty(input) : FormService.notEmpty(input);
 
     return { error, errorMessage };
   }

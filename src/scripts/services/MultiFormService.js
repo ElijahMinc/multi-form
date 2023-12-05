@@ -20,6 +20,18 @@ export class MultiFormService extends FormService {
       handleSuccessNextStep: async (formData, currentStep) => {},
       handleSubmit: async (formData, currentStep) => {},
       setValueOnInit: (input, valueFromInitData) => {},
+      customValidateFields: (
+        input,
+        options = {
+          isNotRequiredButMustValidate: false,
+          configurationErrorHandling: {
+            isEmpty: true,
+            error: 0,
+            invalidField: false,
+            errorMessage: '',
+          },
+        }
+      ) => {},
       initFormData: null,
     }
   ) {
