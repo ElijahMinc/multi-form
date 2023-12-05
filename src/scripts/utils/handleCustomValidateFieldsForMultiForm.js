@@ -8,7 +8,6 @@ export function handleCustomValidateFieldsForMultiForm(
   input,
   { isNotRequiredButMustValidate, configurationErrorHandling }
 ) {
-  console.log('input', input);
   if (input.type === 'text' && !input.matches('[data-date-of-birth]')) {
     if (!input.value.length && !isNotRequiredButMustValidate) {
       ++configurationErrorHandling.errors;

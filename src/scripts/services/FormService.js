@@ -60,7 +60,14 @@ export class FormService {
   }
 
   static setSuccessRequire(input) {
-    const fieldBlock = FormService.getRequireFieldBlock(input);
+    let fieldBlock = FormService.getRequireFieldBlock(input);
+
+    if (!fieldBlock) {
+      let validatedFieldInAnyCase = FormService.getValidateFieldBlock(input);
+
+      fieldBlock = validatedFieldInAnyCase;
+    }
+
     if (!fieldBlock) return;
 
     fieldBlock.setAttribute('data-success', '');
@@ -92,7 +99,14 @@ export class FormService {
   }
 
   static cancelError(input) {
-    const fieldBlock = FormService.getRequireFieldBlock(input);
+    let fieldBlock = FormService.getRequireFieldBlock(input);
+
+    if (!fieldBlock) {
+      let validatedFieldInAnyCase = FormService.getValidateFieldBlock(input);
+
+      fieldBlock = validatedFieldInAnyCase;
+    }
+
     if (!fieldBlock) return;
 
     const errorMessage = fieldBlock.querySelector(
@@ -106,11 +120,19 @@ export class FormService {
     FormService.setSuccessRequire(input);
 
     if (!errorMessage) return;
+
     errorMessage.style.display = 'none';
   }
 
   static setError(input, messageError) {
-    const fieldBlock = FormService.getRequireFieldBlock(input);
+    let fieldBlock = FormService.getRequireFieldBlock(input);
+
+    if (!fieldBlock) {
+      let validatedFieldInAnyCase = FormService.getValidateFieldBlock(input);
+
+      fieldBlock = validatedFieldInAnyCase;
+    }
+
     if (!fieldBlock) return;
 
     const errorMessage = fieldBlock.querySelector(
@@ -181,11 +203,23 @@ export class FormService {
         configurationErrorHandling.errors = ++configurationErrorHandling.errors;
         configurationErrorHandling.isEmpty = true;
         configurationErrorHandling.errorMessage = 'Required field';
+
+        return {
+          error: configurationErrorHandling.errors,
+          errorMessage: configurationErrorHandling.errorMessage,
+          isEmpty: configurationErrorHandling.isEmpty,
+        };
       }
 
       if (!input.value && isNotRequiredButMustValidate) {
         configurationErrorHandling.errorMessage = '';
         configurationErrorHandling.errors = 0;
+
+        return {
+          error: configurationErrorHandling.errors,
+          errorMessage: configurationErrorHandling.errorMessage,
+          isEmpty: configurationErrorHandling.isEmpty,
+        };
       }
 
       if (input.type === 'radio') {
@@ -261,6 +295,13 @@ export class FormService {
       errorMessage: configurationErrorHandling.errorMessage,
       isEmpty: configurationErrorHandling.isEmpty,
     };
+  }
+
+  static getValidateFieldBlock(input) {
+    if (input.classList.contains('_field')) return input;
+
+    const validateFieldBlock = input.closest('._field');
+    return validateFieldBlock;
   }
 
   static setEmpty(input) {
@@ -342,7 +383,6 @@ export class FormService {
     }
 
     const inputByName = this.$form.querySelectorAll(`[name="${inputName}"`);
-    console.log('inputByName', inputByName);
 
     if (inputByName.length === 1) {
       inputByName[0].value = valueFromInitDataByInputName;
@@ -399,10 +439,6 @@ export class FormService {
               return;
             }
 
-            console.log(
-              'changed after prefetch data',
-              vscomCustomSelect.classList.contains('_after-prefetch')
-            );
             const hiddenInput = vscomCustomSelect.querySelector(
               'input[type="hidden"]'
             );
