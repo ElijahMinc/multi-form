@@ -8,21 +8,25 @@ export const initMaskForDateInput = (selectorId) => {
   const dateOfBirthMaskField = IMask(input, {
     mask: Date,
     pattern: 'YYYY.MM.DD',
+    lazy: false,
     blocks: {
       YYYY: {
         mask: IMask.MaskedRange,
-        from: 1900,
-        to: 9999,
+        from: 1932,
+        to: 2090,
+        placeholderChar: 'Y',
       },
       MM: {
         mask: IMask.MaskedRange,
         from: 1,
         to: 12,
+        placeholderChar: 'M',
       },
       DD: {
         mask: IMask.MaskedRange,
         from: 1,
         to: 31,
+        placeholderChar: 'D',
       },
     },
     format: function (date) {
@@ -44,7 +48,6 @@ export const initMaskForDateInput = (selectorId) => {
       const year = parseInt(yearMonthDay[0], 10);
       const month = parseInt(yearMonthDay[1], 10) - 1;
       const day = parseInt(yearMonthDay[2], 10);
-
       return new Date(year, month, day);
     },
   });

@@ -43,3 +43,7 @@ export const yearSelectOptions = [
     value: '4',
   },
 ];
+
+export const errorMessageDateOfBirth = 'Invalid date of birth';
+export const errorMessagePhone = 'Invalid phone';
+export const errorMessageRequiredField = 'Required field';
