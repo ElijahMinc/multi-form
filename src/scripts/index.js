@@ -160,7 +160,7 @@ async function initApp() {
           : formData;
 
         const allUserData = await userInfoIndexedDb.get('info');
-        console.log('allUserData', allUserData);
+
         const data = { ...allUserData, ...userData };
 
         await userInfoIndexedDb.set('info', data);

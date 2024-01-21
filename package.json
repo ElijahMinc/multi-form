@@ -2,12 +2,12 @@
   "name": "multi-form",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
   "source": "src/index.html",
   "scripts": {
     "dev": "parcel serve ./src/index.html --no-cache",
     "mvc": "parcel serve ./mvc/mvc.html --no-cache",
-    "build": "parcel",
+    "build": "parcel build ./src/index.html --public-url ./",
+    "watch": "parcel watch ./dist/index.html",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""

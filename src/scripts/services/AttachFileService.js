@@ -196,7 +196,7 @@ export class AttachFileService {
   }
 
   #setup() {
-    this.cvInput.addEventListener('change', this.handleChange.bind(this));
-    this.trashCVFileIcon.addEventListener('click', this.cancelCv.bind(this));
+    this.cvInput?.addEventListener('change', this.handleChange.bind(this));
+    this.trashCVFileIcon?.addEventListener('click', this.cancelCv.bind(this));
   }
 }
