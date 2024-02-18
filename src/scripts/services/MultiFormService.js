@@ -79,7 +79,8 @@ export class MultiFormService extends FormService {
   }
 
   renderProgress() {
-    if (this.$progressSteps.length) return;
+
+    if (!this.$progressSteps.length) return;
 
     this.$progressSteps.forEach((progressStep, index) => {
       progressStep.classList.toggle(
@@ -241,7 +242,7 @@ export class MultiFormService extends FormService {
     }
 
     this.currentStep += incrementor;
-
+    console.log('here');
     this.renderSteps();
     this.renderProgress();
   }
