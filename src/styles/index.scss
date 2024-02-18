@@ -7,6 +7,8 @@
 @import 'components/buttons';
 @import 'components/checkbox';
 @import 'components/spinner';
+@import 'components/modal';
+
 @import '../../node_modules/virtual-select-plugin/dist/virtual-select.min';
 @import '../../node_modules/intl-tel-input/build/css/intlTelInput.min.css';
 
@@ -36,7 +38,4 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
-}
-
-.form {
 }

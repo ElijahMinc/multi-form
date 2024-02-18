@@ -26,7 +26,7 @@ export const initMaskForPhoneInput = (phoneInput) => {
       //   console.log('res.country', res)
       //   const countryCode = (res && res.country) ? res.country : 'hu'
       //   callback(countryCode)
-      callback('hu');
+      callback('ua');
     },
     hiddenInput: '',
     initialCountry: 'auto',

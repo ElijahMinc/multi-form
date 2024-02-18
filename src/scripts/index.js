@@ -11,11 +11,27 @@ import { toggleRenderFormOrInformationPanel } from './utils/toggleRenderFormOrIn
 import { getEllapsedTimeStatus } from './utils/getEllapsedTimeStatus';
 import { englishLevelSelectOptions, yearSelectOptions } from './constants';
 import { FormService } from './services/FormService';
+import { ModalService } from './services/ModalService';
 
-import '../styles/index.scss';
 import { handleCustomValidateFieldsForMultiForm } from './utils/handleCustomValidateFieldsForMultiForm';
+import '../styles/index.scss';
 
-async function initApp() {
+function initModal() {
+  const btn = document.querySelector('.btn-modal');
+
+  if (!btn) {
+    throw new Error('Something went wrong');
+  }
+
+  const modal = new ModalService({
+    id: 'modal',
+    closeId: 'modal-close-btn',
+  });
+
+  btn.addEventListener('click', modal.toggle.bind(modal));
+}
+
+async function initForm() {
   const formWrapper = document.querySelector('.form');
   const form = formWrapper.querySelector('#form');
 
@@ -83,9 +99,9 @@ async function initApp() {
     step,
   };
 
-  await formLogic(userInfoFromSession);
+  await initForm(userInfoFromSession);
 
-  async function formLogic(dataFromSession) {
+  async function initForm(dataFromSession) {
     const userFromSession = dataFromSession.user;
     const stepFromSession = dataFromSession.step;
 
@@ -254,4 +270,5 @@ async function initApp() {
   }
 }
 
-initApp();
+initForm();
+initModal();

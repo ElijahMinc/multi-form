@@ -23,8 +23,7 @@ $additional-color-11: #f5f9fb;
   position: relative;
 
   padding: 35px 45px 41px 45px;
-  border: 1px solid $additional-color-4;
-  border-radius: 10px;
+  background-color: $white;
 
   @media (max-width: $mobile-max) {
     padding: 41px 20px 42px 20px;
