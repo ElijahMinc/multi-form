@@ -27,12 +27,12 @@ body {
 
 .wrapper {
   min-height: 100%;
-}
 
-.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .container {

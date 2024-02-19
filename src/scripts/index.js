@@ -31,6 +31,15 @@ function initModal() {
   btn.addEventListener('click', modal.toggle.bind(modal));
 }
 
+function initResetModal(userInfoIndexedDb) {
+  const btnResetModal = document.querySelector('.btn-reset-form');
+  btnResetModal.addEventListener('click', async () => {
+    await userInfoIndexedDb.del('info');
+    localStorage.removeItem(`FORM_STEP-${window.location.pathname}`);
+    window.location.reload();
+  });
+}
+
 async function initForm() {
   const formWrapper = document.querySelector('.form');
   const form = formWrapper.querySelector('#form');
@@ -51,7 +60,7 @@ async function initForm() {
     return;
   }
 
-  const userInfo = new IndexedDbService('userInfo', 1, {
+  const userInfoIndexedDb = new IndexedDbService('userInfo', 1, {
     upgrade(db) {
       db.createObjectStore('userInfo');
     },
@@ -89,7 +98,7 @@ async function initForm() {
       informationPanelWrapper.activeInformationStep(continueStep);
 
       step = userSession.step;
-      user = await userInfo.get('info');
+      user = await userInfoIndexedDb.get('info');
       toggleRenderFormOrInformationPanel();
     }
   }
@@ -267,6 +276,7 @@ async function initForm() {
     });
 
     initMaskForDateInput('#date-of-birth');
+    initResetModal(userInfoIndexedDb);
   }
 }
 
