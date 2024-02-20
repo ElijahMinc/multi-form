@@ -180,15 +180,13 @@ async function initForm() {
       currentStep: stepFromSession || 0,
       customValidateFields: handleCustomValidateFieldsForMultiForm,
       handleSuccessNextStep: async (formData, currentStep) => {
-        const userData = userFromSession
-          ? { ...userFromSession, ...formData }
-          : formData;
+        const userData = formData;
 
-        const allUserData = await userInfoIndexedDb.get('info');
+        let allUserData = await userInfoIndexedDb.get('info');
 
-        const data = { ...allUserData, ...userData };
+        await userInfoIndexedDb.set('info', { ...allUserData, ...userData });
 
-        await userInfoIndexedDb.set('info', data);
+        allUserData = await userInfoIndexedDb.get('info');
 
         localStorage.setItem(
           `FORM_STEP-${window.location.pathname}`,
@@ -202,22 +200,20 @@ async function initForm() {
         SpinnerService.showSpinner();
 
         try {
-          await UserService.sendUserInfo(data);
+          await UserService.sendUserInfo(allUserData);
         } catch (error) {
         } finally {
           SpinnerService.hideSpinner();
         }
       },
       handleSubmit: async (formData, currentStep) => {
-        const userData = userFromSession
-          ? { ...userFromSession, ...formData }
-          : formData;
+        const userData = formData;
 
-        const allUserData = await userInfoIndexedDb.get('info');
-
-        let data = { ...allUserData, ...userData };
+        let allUserData = await userInfoIndexedDb.get('info');
 
         await userInfoIndexedDb.set('info', { ...allUserData, ...userData });
+
+        allUserData = await userInfoIndexedDb.get('info');
 
         localStorage.setItem(
           `FORM_STEP-${window.location.pathname}`,
@@ -231,7 +227,7 @@ async function initForm() {
         SpinnerService.showSpinner();
 
         try {
-          const responseUser = await UserService.sendUserData(data);
+          const responseUser = await UserService.sendUserData(allUserData);
 
           const successStep =
             informationPanelWrapper.getSuccessInformationStep();
@@ -252,7 +248,7 @@ async function initForm() {
 
           await userInfoIndexedDb.del('info');
 
-          alert(JSON.stringify(data, null, 4));
+          alert(JSON.stringify(allUserData, null, 4));
         } catch (error) {
           console.log('error', error);
         } finally {
@@ -282,3 +278,20 @@ async function initForm() {
 
 initForm();
 initModal();
+
+(() => {
+  function Person(name, lastname) {
+    this.name = name;
+    this.lastname = lastname;
+
+    return (() => {
+      Person.prototype.sayHello = function () {
+        return this.name + ' ' + this.lastname;
+      };
+    })();
+  }
+
+  const user1 = new Person('Vasya', 'Pupkin');
+
+  console.log(user1.sayHello());
+})();

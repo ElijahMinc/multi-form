@@ -6,7 +6,7 @@ import {
 
 export function handleCustomValidateFieldsForMultiForm(
   input,
-  { isNotRequiredButMustValidate, configurationErrorHandling }
+  { isNotRequiredButMustValidate, configurationErrorHandling } // errors, invalidField, isEmpty, errorMessage
 ) {
   if (input.type === 'text' && !input.matches('[data-date-of-birth]')) {
     if (!input.value.length && !isNotRequiredButMustValidate) {

@@ -242,7 +242,7 @@ export class MultiFormService extends FormService {
     }
 
     this.currentStep += incrementor;
-    console.log('here');
+
     this.renderSteps();
     this.renderProgress();
   }

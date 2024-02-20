@@ -38,7 +38,7 @@ $additional-color-11: #f5f9fb;
       flex: 1 1 30%;
 
       &-active {
-        background: #00a6eb;
+        background: $blue;
       }
 
       background: #f5f9fb;
@@ -169,7 +169,7 @@ $additional-color-11: #f5f9fb;
       text-transform: uppercase;
       background-position: 0 1px;
       background-size: 12px 12px;
-      color: #00a6eb;
+      color: $blue;
       background-repeat: no-repeat;
       background-color: transparent;
 
@@ -349,7 +349,7 @@ $additional-color-11: #f5f9fb;
         }
 
         .checkbox-label {
-          font-family: 'Proba Pro';
+          font-family: 'Montserrat', sans-serif;
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
@@ -505,7 +505,7 @@ $additional-color-11: #f5f9fb;
                   font-size: 16px;
                   line-height: 20px;
                   color: #a2aec2;
-                  font-family: 'Proba Pro';
+                  font-family: 'Montserrat', sans-serif;
                   opacity: 1;
                 }
 
@@ -561,7 +561,7 @@ $additional-color-11: #f5f9fb;
                       line-height: 130%;
                       padding: 8px 16px;
                       color: #0c1628;
-                      font-family: 'Proba Pro';
+                      font-family: $font-family_base;
                       overflow: visible;
                       text-overflow: unset;
                       white-space: initial;
@@ -678,7 +678,7 @@ $additional-color-11: #f5f9fb;
           + .radio__label {
             cursor: pointer;
 
-            font-family: 'Proba Pro';
+            font-family: 'Montserrat', sans-serif;
             font-style: normal;
             font-weight: 400;
             font-size: 16px;
@@ -706,9 +706,9 @@ $additional-color-11: #f5f9fb;
           &:checked {
             + .radio__label {
               &:before {
-                background-color: #00a6eb;
+                background-color: $blue;
                 box-shadow: inset 0 0 0 4px $white;
-                border: 1px solid #00a6eb;
+                border: 1px solid $blue;
               }
             }
           }
@@ -717,7 +717,7 @@ $additional-color-11: #f5f9fb;
             + .radio__label {
               &:before {
                 outline: none;
-                border-color: #00a6eb;
+                border-color: $blue;
               }
             }
           }
@@ -843,7 +843,7 @@ $additional-color-11: #f5f9fb;
           background: #e4e8ef;
 
           &-line {
-            background: #00a6eb;
+            background: $blue;
             height: 100%;
             width: 0%;
 

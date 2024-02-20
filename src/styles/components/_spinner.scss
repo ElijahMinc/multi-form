@@ -15,10 +15,11 @@
   transition: 0.3s;
 
   &.show {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
     z-index: 9;
     opacity: 1;
     visibility: visible;
+    border-radius: 5px;
   }
 
   .lds-default {
