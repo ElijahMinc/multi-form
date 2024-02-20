@@ -16,6 +16,20 @@ import { ModalService } from './services/ModalService';
 import { handleCustomValidateFieldsForMultiForm } from './utils/handleCustomValidateFieldsForMultiForm';
 import '../styles/index.scss';
 
+function initConfetti() {
+  const confettiCanvas = document.createElement('canvas');
+  document.body.appendChild(confettiCanvas);
+
+  const myConfetti = window.confetti.create(confettiCanvas, {
+    resize: true,
+    useWorker: true,
+  });
+  myConfetti({
+    particleCount: 100,
+    spread: 160,
+  });
+}
+
 function initModal() {
   const btn = document.querySelector('.btn-modal');
 
@@ -33,9 +47,14 @@ function initModal() {
 
 function initResetModal(userInfoIndexedDb) {
   const btnResetModal = document.querySelector('.btn-reset-form');
+  console.log('btnResetModal', btnResetModal);
   btnResetModal.addEventListener('click', async () => {
     await userInfoIndexedDb.del('info');
     localStorage.removeItem(`FORM_STEP-${window.location.pathname}`);
+    console.log(
+      '`FORM_STEP-${window.location.pathname}`',
+      `FORM_STEP-${window.location.pathname}`
+    );
     window.location.reload();
   });
 }
@@ -54,17 +73,19 @@ async function initForm() {
     `FORM_STEP-${window.location.pathname}`
   );
 
-  if (!form) {
-    console.error(`Not found form: ${form}`);
-
-    return;
-  }
-
   const userInfoIndexedDb = new IndexedDbService('userInfo', 1, {
     upgrade(db) {
       db.createObjectStore('userInfo');
     },
   });
+
+  initResetModal(userInfoIndexedDb);
+
+  if (!form) {
+    console.error(`Not found form: ${form}`);
+
+    return;
+  }
 
   let user = null;
   let step = 0;
@@ -107,7 +128,7 @@ async function initForm() {
     user,
     step,
   };
-
+  console.log('init');
   await initForm(userInfoFromSession);
 
   async function initForm(dataFromSession) {
@@ -249,6 +270,7 @@ async function initForm() {
           await userInfoIndexedDb.del('info');
 
           alert(JSON.stringify(allUserData, null, 4));
+          window.confetti();
         } catch (error) {
           console.log('error', error);
         } finally {
@@ -272,26 +294,9 @@ async function initForm() {
     });
 
     initMaskForDateInput('#date-of-birth');
-    initResetModal(userInfoIndexedDb);
   }
 }
 
+initConfetti();
 initForm();
 initModal();
-
-(() => {
-  function Person(name, lastname) {
-    this.name = name;
-    this.lastname = lastname;
-
-    return (() => {
-      Person.prototype.sayHello = function () {
-        return this.name + ' ' + this.lastname;
-      };
-    })();
-  }
-
-  const user1 = new Person('Vasya', 'Pupkin');
-
-  console.log(user1.sayHello());
-})();
