@@ -161,7 +161,6 @@ export class MultiFormService extends FormService {
           const checkedRadio = Array.from(radios).find(
             (radio) => radio.checked
           );
-          console.log('checkedRadio', checkedRadio);
           const isSetValueEnabled = validateCb(inputName, checkedRadio.value);
 
           if (!isSetValueEnabled) return;
@@ -193,7 +192,7 @@ export class MultiFormService extends FormService {
             inputName,
             inputValue
           );
-          console.log('isCustomValid', isCustomSetValueEnabled);
+
           return isCustomSetValueEnabled ?? true;
         } catch (err) {
           // or we can THROW error
@@ -219,9 +218,9 @@ export class MultiFormService extends FormService {
 
     if (submitBtn) {
       const { isValid, data } = await getValuesByStep(this.currentStep);
-      console.log(isValid, data);
+
       if (!isValid) return;
-      console.log(this.options);
+
       await this.options.handleSubmit?.(data, this.currentStep);
 
       return;

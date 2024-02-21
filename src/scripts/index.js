@@ -278,20 +278,3 @@ async function initForm() {
 
 initForm();
 initModal();
-
-(() => {
-  function Person(name, lastname) {
-    this.name = name;
-    this.lastname = lastname;
-
-    return (() => {
-      Person.prototype.sayHello = function () {
-        return this.name + ' ' + this.lastname;
-      };
-    })();
-  }
-
-  const user1 = new Person('Vasya', 'Pupkin');
-
-  console.log(user1.sayHello());
-})();

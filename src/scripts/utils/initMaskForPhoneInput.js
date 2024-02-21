@@ -24,7 +24,7 @@ export const initMaskForPhoneInput = (phoneInput) => {
       // console.log('reader', reader);
       //   const res = await req.json();
       //   console.log('res.country', res)
-      //   const countryCode = (res && res.country) ? res.country : 'hu'
+      //   const countryCode = (res && res.country) ? res.country : 'ua'
       //   callback(countryCode)
       callback('ua');
     },
