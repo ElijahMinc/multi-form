@@ -1,3 +1,10 @@
+import {
+  errorMessageInvalidEmail,
+  errorMessageInvalidFileFormat,
+  errorMessageInvalidFileSize,
+  errorMessageRequiredField,
+} from '../constants';
+
 export class FormService {
   static NO_VALID_CLASS = 'no-valid';
   static FORM_HIDE_CLASS = 'hide';
@@ -246,7 +253,7 @@ export class FormService {
           configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
-          configurationErrorHandling.errorMessage = 'Invalid email';
+          configurationErrorHandling.errorMessage = errorMessageInvalidEmail;
         }
 
         if (!input.value.length && !isNotRequiredButMustValidate) {
@@ -254,7 +261,7 @@ export class FormService {
           configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
-          configurationErrorHandling.errorMessage = 'Required field';
+          configurationErrorHandling.errorMessage = errorMessageRequiredField;
         }
       }
 
@@ -273,13 +280,14 @@ export class FormService {
           configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
-          configurationErrorHandling.errorMessage = 'Invalid format';
+          configurationErrorHandling.errorMessage =
+            errorMessageInvalidFileFormat;
         } else if (FormService.isInvalidSize(file)) {
           configurationErrorHandling.isEmpty = false;
           configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
-          configurationErrorHandling.errorMessage = 'File is too large';
+          configurationErrorHandling.errorMessage = errorMessageInvalidFileSize;
         }
       }
 

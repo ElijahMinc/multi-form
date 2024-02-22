@@ -1,3 +1,5 @@
+import IMask from "imask";
+
 export const englishLevelSelectOptions = [
   {
     label: 'A1',
@@ -47,6 +49,9 @@ export const yearSelectOptions = [
 export const errorMessageDateOfBirth = 'Invalid date of birth';
 export const errorMessagePhone = 'Invalid phone';
 export const errorMessageRequiredField = 'Required field';
+export const errorMessageInvalidEmail = 'Invalid email';
+export const errorMessageInvalidFileFormat = 'Invalid format';
+export const errorMessageInvalidFileSize = 'File is too large';
 
 export const dateOfBirthOptions = {
   mask: Date,
