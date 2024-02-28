@@ -31,7 +31,6 @@ export class MultiFormService extends FormService {
           configurationErrorHandling: {
             isEmpty: true,
             error: 0,
-            invalidField: false,
             errorMessage: '',
           },
         }
@@ -46,7 +45,7 @@ export class MultiFormService extends FormService {
       handleSubmit,
       setValueOnInit,
       watch,
-      initFormData: null, 
+      initFormData: null,
     });
 
     if (!this.$form) return;
@@ -54,7 +53,7 @@ export class MultiFormService extends FormService {
     this.$steps = [...this.$form.querySelectorAll('[data-step]')];
 
     this.$progressSteps = [...this.$form.querySelectorAll('.progressbar-step')];
-    this.$stepper = this.$form.querySelector('.stepper');
+
     this.options = {
       ...restMultiFormOptions,
       watch,
