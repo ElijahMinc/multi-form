@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Base Form</title>
+    <script type="module" src="./scripts/demo/base.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="form">
+        <form id="form" class="resume__form-content form-content">
+          <div class="form__title">Base Example</div>
+          <div class="form-content__body">
+            <!-- <div class="stepper"> -->
+            <div class="form__step form__step-active" data-step="1">
+              <fieldset class="fields-block">
+                <label class="fields-block__input _require _field">
+                  <input
+                    type="text"
+                    name="first_name"
+                    maxlength="64"
+                    placeholder=" "
+                  />
+                  <span class="fields-block__placeholder">First name</span>
+                  <span class="fields-block__no-valid-message"></span>
+                </label>
+              </fieldset>
+
+              <fieldset class="fields-block">
+                <label class="fields-block__input _require _field">
+                  <input
+                    type="text"
+                    class="form-field"
+                    name="last_name"
+                    maxlength="64"
+                    placeholder=" "
+                  />
+                  <span class="fields-block__placeholder">Last Name</span>
+                  <span class="fields-block__no-valid-message"></span>
+                </label>
+              </fieldset>
+
+              <fieldset class="fields-block">
+                <label class="fields-block__input _validate _field">
+                  <input
+                    type="email"
+                    class="form-field"
+                    name="email"
+                    maxlength="256"
+                    placeholder=" "
+                  />
+                  <span class="fields-block__placeholder">Email</span>
+                  <span class="fields-block__no-valid-message"></span>
+                </label>
+              </fieldset>
+
+              <fieldset class="fields-block">
+                <div class="fields-block-radios _require _field">
+                  <div class="fields-block__radio">
+                    <input
+                      id="bachelor"
+                      value="3"
+                      type="radio"
+                      name="degree"
+                      class="radio__input"
+                    />
+                    <label for="bachelor" class="radio__label"
+                      ><span>Bachelor</span></label
+                    >
+                  </div>
+                  <div class="fields-block__radio">
+                    <input
+                      id="master"
+                      value="1"
+                      type="radio"
+                      name="degree"
+                      class="radio__input"
+                    />
+                    <label for="master" class="radio__label"
+                      ><span>Master</span></label
+                    >
+                  </div>
+                  <div class="fields-block__radio">
+                    <input
+                      id="phd"
+                      value="6"
+                      type="radio"
+                      name="degree"
+                      class="radio__input"
+                    />
+                    <label for="phd" class="radio__label"
+                      ><span>Ph.D</span></label
+                    >
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="fields-block">
+                <div class="fields-block__input _require _field">
+                  <div class="checkbox">
+                    <input
+                      name="agree"
+                      type="checkbox"
+                      id="privacy-policy-checkbox"
+                      class="checkbox-input"
+                    />
+                    <label for="privacy-policy-checkbox" class="checkbox-label"
+                      >I agree to the
+                      <a target="_blank" class="privacy-link" href="#"
+                        >privacy policy</a
+                      >.</label
+                    >
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="form-content__footer">
+                <button
+                  type="button"
+                  class="btn btn_blue"
+                  data-btn="submit"
+                  data-btn-step="1"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</html>

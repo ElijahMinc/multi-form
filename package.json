@@ -5,6 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "dev": "parcel serve ./src/index.html --no-cache",
+    "dev:demo": "parcel serve ./src/demo.html --no-cache",
     "mvc": "parcel serve ./mvc/mvc.html --no-cache",
     "build": "parcel build ./src/index.html --public-url ./",
     "watch": "parcel watch ./dist/index.html",
