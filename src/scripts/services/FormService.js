@@ -13,6 +13,7 @@ export class FormService {
     initFormData: null,
     handleSubmit: async (formData, currentStep) => {},
     setValueOnInit: (input, valueFromInitData) => {},
+    watch: (fieldName, fieldValue) => {},
     customValidateFields: (
       input,
       options = {
@@ -32,6 +33,7 @@ export class FormService {
     options = {
       handleSubmit: async (formData, currentStep) => {},
       setValueOnInit: (input, valueFromInitData) => {},
+      watch: (fieldName, fieldValue) => {},
       customValidateFields: (
         input,
         options = {
@@ -247,6 +249,24 @@ export class FormService {
         }
       }
 
+      if (input.type === 'checkbox') {
+        const wrapperContainer = FormService.getRequireFieldBlock(input);
+
+        if (!wrapperContainer) return;
+
+        const isSomeoneChecked = Array.from(
+          wrapperContainer.querySelectorAll('input')
+        ).some((input) => input.checked);
+
+        if (!isSomeoneChecked && !isNotRequiredButMustValidate) {
+          configurationErrorHandling.isEmpty = true;
+          configurationErrorHandling.invalidField = input;
+          configurationErrorHandling.errors =
+            ++configurationErrorHandling.errors;
+          configurationErrorHandling.errorMessage = '';
+        }
+      }
+
       if (input.type === 'email') {
         if (FormService.emailTest(input)) {
           configurationErrorHandling.isEmpty = false;
@@ -394,6 +414,11 @@ export class FormService {
 
     if (inputByName.length === 1) {
       inputByName[0].value = valueFromInitDataByInputName;
+
+      if (inputByName[0].type === 'checkbox') {
+        inputByName[0].checked = true;
+      }
+
       this.options?.setValueOnInit(input);
       FormService.setSuccessRequire(input);
 
@@ -422,15 +447,17 @@ export class FormService {
 
       switch (input.type) {
         case 'checkbox':
-          input.addEventListener('change', () =>
-            this.handleValidateInput(input)
-          );
+          input.addEventListener('change', () => {
+            this.options?.watch?.(input.name, input.value);
+            this.handleValidateInput(input);
+          });
           break;
 
         case 'radio':
-          input.addEventListener('change', () =>
-            this.handleValidateInput(input)
-          );
+          input.addEventListener('change', () => {
+            this.options?.watch?.(input.name, input.value);
+            this.handleValidateInput(input);
+          });
           break;
 
         case 'hidden':
@@ -450,12 +477,21 @@ export class FormService {
             const hiddenInput = vscomCustomSelect.querySelector(
               'input[type="hidden"]'
             );
+
             this.handleValidateInput(hiddenInput);
           });
           break;
 
         default:
-          input.addEventListener('blur', () => this.handleValidateInput(input));
+          this.options?.watch &&
+            input.addEventListener('input', () =>
+              this.options?.watch?.(input.name, input.value)
+            );
+
+          input.addEventListener('blur', () => {
+            this.options?.watch?.(input.name, input.value);
+            this.handleValidateInput(input);
+          });
       }
     });
 

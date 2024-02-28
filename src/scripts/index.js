@@ -20,13 +20,9 @@ function initConfetti() {
   const confettiCanvas = document.createElement('canvas');
   document.body.appendChild(confettiCanvas);
 
-  const myConfetti = window.confetti.create(confettiCanvas, {
+  window.confetti.create(confettiCanvas, {
     resize: true,
     useWorker: true,
-  });
-  myConfetti({
-    particleCount: 100,
-    spread: 160,
   });
 }
 
@@ -51,10 +47,6 @@ function initResetModal(userInfoIndexedDb) {
   btnResetModal.addEventListener('click', async () => {
     await userInfoIndexedDb.del('info');
     localStorage.removeItem(`FORM_STEP-${window.location.pathname}`);
-    console.log(
-      '`FORM_STEP-${window.location.pathname}`',
-      `FORM_STEP-${window.location.pathname}`
-    );
     window.location.reload();
   });
 }

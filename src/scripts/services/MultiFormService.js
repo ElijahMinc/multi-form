@@ -10,6 +10,8 @@ export class MultiFormService extends FormService {
     handleSubmit: async (formData, currentStep) => {},
     setValueOnInit: (input, valueFromInitData) => {},
     customValidateByStep: (inputField) => {}, // must return boolean
+    watch: (fieldName, fieldValue) => {},
+
     initFormData: null,
   };
 
@@ -19,6 +21,8 @@ export class MultiFormService extends FormService {
       currentStep: 0,
       handleSuccessNextStep: async (formData, currentStep) => {},
       handleSubmit: async (formData, currentStep) => {},
+      watch: (fieldName, fieldValue) => {},
+
       setValueOnInit: (input, valueFromInitData) => {},
       customValidateFields: (
         input,
@@ -35,12 +39,14 @@ export class MultiFormService extends FormService {
       initFormData: null,
     }
   ) {
-    const { handleSubmit, setValueOnInit, ...restMultiFormOptions } = options;
+    const { handleSubmit, setValueOnInit, watch, ...restMultiFormOptions } =
+      options;
 
     super(formId, {
       handleSubmit,
       setValueOnInit,
-      initFormData: null, // because we use initMultiForm
+      watch,
+      initFormData: null, 
     });
 
     if (!this.$form) return;
@@ -49,7 +55,12 @@ export class MultiFormService extends FormService {
 
     this.$progressSteps = [...this.$form.querySelectorAll('.progressbar-step')];
     this.$stepper = this.$form.querySelector('.stepper');
-    this.options = { ...restMultiFormOptions, handleSubmit, setValueOnInit };
+    this.options = {
+      ...restMultiFormOptions,
+      watch,
+      handleSubmit,
+      setValueOnInit,
+    };
 
     this.currentStep =
       this.options?.currentStep ??
@@ -79,7 +90,6 @@ export class MultiFormService extends FormService {
   }
 
   renderProgress() {
-
     if (!this.$progressSteps.length) return;
 
     this.$progressSteps.forEach((progressStep, index) => {
@@ -110,7 +120,6 @@ export class MultiFormService extends FormService {
     if (!target.matches('[data-btn]')) return;
 
     let incrementor = 0;
-
     const btn = target.dataset.btn;
     const prevBtn = btn === 'prev';
     const nextPrev = btn === 'next';
@@ -130,19 +139,22 @@ export class MultiFormService extends FormService {
 
     const getValuesByStep = async (step) => {
       const data = {};
-      const isValidStep = this.getValidateMultiForm();
+      let errors = 0;
       const fieldBlocks = this.getAllFieldsByStep(step + 1);
+      let isValidStep = this.getValidateMultiForm();
+
+      fieldBlocks.forEach((field) => {
+        const input = getInputFromWrapperBlock(field);
+
+        if (!input) return;
+
+        const { error: validateError } = this.handleValidateInput(input);
+
+        errors += validateError;
+        isValidStep = !errors;
+      });
 
       if (!isValidStep) {
-        const requiredFieldBlocks = this.getRequireInputsByStep(step + 1);
-
-        requiredFieldBlocks.forEach((requiredBlock) => {
-          const input = getInputFromWrapperBlock(requiredBlock);
-
-          if (!input) return;
-          this.handleValidateInput(input);
-        });
-
         return { data, isValid: false };
       }
 
@@ -274,7 +286,7 @@ export class MultiFormService extends FormService {
   }
 
   #setupMultiForm() {
-    this.$stepper.addEventListener('click', this.handleSteps.bind(this));
+    this.$form.addEventListener('click', this.handleSteps.bind(this));
 
     this.renderSteps();
     this.renderProgress();
