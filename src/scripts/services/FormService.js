@@ -21,7 +21,6 @@ export class FormService {
         configurationErrorHandling: {
           isEmpty: true,
           error: 0,
-          invalidField: false,
           errorMessage: '',
         },
       }
@@ -41,7 +40,6 @@ export class FormService {
           configurationErrorHandling: {
             isEmpty: true,
             error: 0,
-            invalidField: false,
             errorMessage: '',
           },
         }
@@ -194,11 +192,21 @@ export class FormService {
     form.classList.toggle(FormService.FORM_HIDE_CLASS);
   }
 
+  static setConfigurationErrorMessage(configurationErrorHandling, message) {
+    Object.entries(configurationErrorHandling).forEach(([key]) => {
+      if (key === 'errorMessage') {
+        configurationErrorHandling[key] = message || '';
+      }
+    });
+
+    configurationErrorHandling.isEmpty = false;
+    configurationErrorHandling.errors = ++configurationErrorHandling.errors;
+  }
+
   validateFields(inputs) {
     const configurationErrorHandling = {
       errors: 0,
       isEmpty: false,
-      invalidField: null,
       errorMessage: '',
     };
 
@@ -213,6 +221,13 @@ export class FormService {
         configurationErrorHandling.isEmpty = true;
         configurationErrorHandling.errorMessage = 'Required field';
 
+        if (!!this.options?.customValidateFields) {
+          this.options?.customValidateFields(input, {
+            isNotRequiredButMustValidate,
+            configurationErrorHandling,
+          });
+        }
+
         return {
           error: configurationErrorHandling.errors,
           errorMessage: configurationErrorHandling.errorMessage,
@@ -223,6 +238,13 @@ export class FormService {
       if (!input.value && isNotRequiredButMustValidate) {
         configurationErrorHandling.errorMessage = '';
         configurationErrorHandling.errors = 0;
+
+        if (!!this.options?.customValidateFields) {
+          this.options?.customValidateFields(input, {
+            isNotRequiredButMustValidate,
+            configurationErrorHandling,
+          });
+        }
 
         return {
           error: configurationErrorHandling.errors,
@@ -242,7 +264,6 @@ export class FormService {
 
         if (!isSomeoneChecked && !isNotRequiredButMustValidate) {
           configurationErrorHandling.isEmpty = true;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage = '';
@@ -260,7 +281,6 @@ export class FormService {
 
         if (!isSomeoneChecked && !isNotRequiredButMustValidate) {
           configurationErrorHandling.isEmpty = true;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage = '';
@@ -270,7 +290,6 @@ export class FormService {
       if (input.type === 'email') {
         if (FormService.emailTest(input)) {
           configurationErrorHandling.isEmpty = false;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage = errorMessageInvalidEmail;
@@ -278,7 +297,6 @@ export class FormService {
 
         if (!input.value.length && !isNotRequiredButMustValidate) {
           configurationErrorHandling.isEmpty = true;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage = errorMessageRequiredField;
@@ -297,14 +315,12 @@ export class FormService {
           configurationErrorHandling.errorMessage = '';
         } else if (FormService.isInvalidFormat(file)) {
           configurationErrorHandling.isEmpty = false;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage =
             errorMessageInvalidFileFormat;
         } else if (FormService.isInvalidSize(file)) {
           configurationErrorHandling.isEmpty = false;
-          configurationErrorHandling.invalidField = input;
           configurationErrorHandling.errors =
             ++configurationErrorHandling.errors;
           configurationErrorHandling.errorMessage = errorMessageInvalidFileSize;
