@@ -410,18 +410,18 @@ export class FormService {
       vcCompCustomSelect.setValue(valueFromInitDataByInputName);
       FormService.setSuccessRequire(input);
 
-      this.options?.setValueOnInit(input);
+      this.options?.setValueOnInit?.(input);
       return;
     }
 
     if (input.type === 'tel') {
-      this.options?.setValueOnInit(input, valueFromInitDataByInputName);
+      this.options?.setValueOnInit?.(input, valueFromInitDataByInputName);
       FormService.setSuccessRequire(input);
       return;
     }
 
     if (input.type === 'file') {
-      this.options?.setValueOnInit(input);
+      this.options?.setValueOnInit?.(input);
       //! INIT FILE
       return;
     }
@@ -435,7 +435,7 @@ export class FormService {
         inputByName[0].checked = true;
       }
 
-      this.options?.setValueOnInit(input);
+      this.options?.setValueOnInit?.(input);
       FormService.setSuccessRequire(input);
 
       return;
