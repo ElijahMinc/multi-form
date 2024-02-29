@@ -53,90 +53,6 @@ All the necessary functionality is located in the services folder:
 
 - Multi-step Forms: Want to divide your form into multiple steps? This feature is available! The form can consist of multiple stages, and each stage can contain a plethora of different fields.
 
-## Simple Base/Example
-
-### HTML
-```html
-<!-- YOUR FORM ID NEAR-->
-<form id="form" class="resume__form-content form-content">
-          <div class="form__title">A mind-bogglingly simple example</div>
-          <div class="form-content__body">
-
-              <!-- important class="form__step form__step-active" data-step="1"-->
-            <div class="form__step form__step-active" data-step="1">
-
-                <!-- important fields-block -->
-              <fieldset class="fields-block">
-                <!-- If you want to have a required field:  -->
-                <!-- <label class="fields-block__input _require _field"> -->
-
-                <!-- If you want to have an optional field, but which you want to validate:   -->
-                   <!-- <label class="fields-block__input _validate _field"> -->
-
-                <!-- If you do not want to have a required field  -->
-                <label class="fields-block__input _field">
-                  <input
-                    type="text"
-                    name="first_name"
-                    maxlength="64"
-                    placeholder=" "
-                  />
-                  <span class="fields-block__placeholder">First name</span>
-                  <span class="fields-block__no-valid-message"></span>
-                </label>
-              </fieldset>
-
-              <fieldset class="fields-block">
-                <label class="fields-block__input _require _field">
-                  <input
-                    type="email"
-                    class="form-field"
-                    name="email"
-                    data-email
-                    maxlength="256"
-                    placeholder=" "
-                  />
-                  <span class="fields-block__placeholder">Email</span>
-                  <span class="fields-block__no-valid-message"></span>
-                </label>
-              </fieldset>
-
-              <div class="form-content__footer">
-                  <!-- 
-                1) It is important to label the current level on the button with data-btn-step={{{your_current_step}}}
-
-                2) It is important to mark the button type: 
-    * submit - click will validate the button and submit form
-    * prev - on click the button will return to the previous step
-    * next - on click validation will take place and in case of success the form will go to the next step 
-
--->
-                <button
-                  type="button"
-                  class="btn btn_blue"
-                  data-btn="submit"
-                  data-btn-step="1"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-```
-### JavaScript
-```javascript
-import { MultiFormService } from '../services/MultiFormService';
-
-// All you need to do is call an instance of MultiFormService with your form ID wrapped in your form wrapper
-const instance = new MultiFormService('form', {
-    handleSubmit: (formData) => {
-      console.log('formData', formData);
-    },
-});
-
-```
-
 ## Documentation
 
 ### Classes responsible for button validation:
@@ -233,5 +149,102 @@ const instance = new MultiFormService('form', {
     >
         SUBMIT | PREV | NEXT - ACTIONS
     </button>
+
+```
+### The basic callbacks of the form are: 
+*  **handleSubmit: (formData, currentStep) => {}** - is triggered when we are on the very final step.
+
+*  **handleSuccessNextStep: (formData, currentStep) => {}** - is triggered when we have multiple stapes and successfully move on to the next one.
+
+*  **customValidateFields: (input, { isNotRequiredButMustValidate, configurationErrorHandling }) => {  }** - is triggered when we have multiple stapes and successfully move on to the next one.
+
+*  **customValidateFields: (formData, currentStep) => {}** - is triggered when we have multiple stapes and successfully move on to the next one.
+
+* **setValueOnInit: (input, valueFromInitData) => {}** - we can override the data from initialData. For example, we need this when we use foreign libraries.
+
+* **initFormData** - is an object whose keys must match the names of the fields in the form. This field is responsible for initialization of initial values in fields.
+
+* **watch: (fieldName, fieldValue) => {}** - we can track the current field changes in rantime.
+## Simple Base/Example
+
+### HTML
+```html
+<!-- YOUR FORM ID NEAR-->
+<form id="form" class="resume__form-content form-content">
+          <div class="form__title">A mind-bogglingly simple example</div>
+          <div class="form-content__body">
+
+              <!-- important class="form__step form__step-active" data-step="1"-->
+            <div class="form__step form__step-active" data-step="1">
+
+                <!-- important fields-block -->
+              <fieldset class="fields-block">
+                <!-- If you want to have a required field:  -->
+                <!-- <label class="fields-block__input _require _field"> -->
+
+                <!-- If you want to have an optional field, but which you want to validate:   -->
+                   <!-- <label class="fields-block__input _validate _field"> -->
+
+                <!-- If you do not want to have a required field  -->
+                <label class="fields-block__input _field">
+                  <input
+                    type="text"
+                    name="first_name"
+                    maxlength="64"
+                    placeholder=" "
+                  />
+                  <span class="fields-block__placeholder">First name</span>
+                  <span class="fields-block__no-valid-message"></span>
+                </label>
+              </fieldset>
+
+              <fieldset class="fields-block">
+                <label class="fields-block__input _require _field">
+                  <input
+                    type="email"
+                    class="form-field"
+                    name="email"
+                    data-email
+                    maxlength="256"
+                    placeholder=" "
+                  />
+                  <span class="fields-block__placeholder">Email</span>
+                  <span class="fields-block__no-valid-message"></span>
+                </label>
+              </fieldset>
+
+              <div class="form-content__footer">
+                  <!-- 
+                1) It is important to label the current level on the button with data-btn-step={{{your_current_step}}}
+
+                2) It is important to mark the button type: 
+    * submit - click will validate the button and submit form
+    * prev - on click the button will return to the previous step
+    * next - on click validation will take place and in case of success the form will go to the next step 
+
+-->
+                <button
+                  type="button"
+                  class="btn btn_blue"
+                  data-btn="submit"
+                  data-btn-step="1"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+```
+### JavaScript
+```javascript
+import { MultiFormService } from '../services/MultiFormService';
+
+// All you need to do is call an instance of MultiFormService with your form ID wrapped in your form wrapper
+const instance = new MultiFormService('form', {
+    handleSubmit: (formData) => {
+      console.log('formData', formData);
+    },
+});
 
 ```
