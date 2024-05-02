@@ -16,17 +16,20 @@ export const initMaskForPhoneInput = (phoneInput) => {
     dropdownContainer: null,
     formatOnDisplay: true,
     geoIpLookup: async function (callback) {
-      const req = await fetch('https://ipinfo.io');
-      console.log('req', req);
-      // const reader = await req.json();
+      const req = await fetch(
+        'https://ipinfo.io/89.154.27.44?token=eed74fdeba82f0',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      // const readStream = await res.read();
-      // console.log('reader', reader);
-      //   const res = await req.json();
-      //   console.log('res.country', res)
-      //   const countryCode = (res && res.country) ? res.country : 'ua'
-      //   callback(countryCode)
-      callback('ua');
+      const res = await req.json();
+      console.log('res.country', res);
+      const countryCode = res && res.country ? res.country : 'ua';
+      callback(countryCode);
+      // callback('ua');
     },
     hiddenInput: '',
     initialCountry: 'auto',

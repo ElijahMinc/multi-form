@@ -74,6 +74,8 @@ export class MultiFormService extends FormService {
 
     this.#setupMultiForm();
 
+    this.inputFields = [];
+
     if (options.initFormData) {
       this.initMultiForm(options.initFormData);
     }
@@ -113,6 +115,95 @@ export class MultiFormService extends FormService {
     return requiredFields;
   }
 
+  async getValuesByStep(step) {
+    const data = {};
+    let errors = 0;
+    const fieldBlocks = this.getAllFieldsByStep(step + 1);
+    let isValidStep = this.getValidateMultiForm();
+
+    fieldBlocks.forEach((field) => {
+      const input = getInputFromWrapperBlock(field);
+
+      if (!input) return;
+
+      const { error: validateError } = this.handleValidateInput(input);
+
+      errors += validateError;
+      isValidStep = !errors;
+    });
+
+    if (!isValidStep) {
+      return { data, isValid: false };
+    }
+
+    function setInputValue(
+      input,
+      validateCb = (inputName, inputValue) => {
+        return true; // by default
+      } // you must returned true or false for set input
+    ) {
+      const inputName = input.name;
+      const inputValue = input.value;
+
+      if (input.type === 'radio') {
+        const fieldBlock = input.closest('._field');
+        const radios = fieldBlock.querySelectorAll('input');
+        const checkedRadio = Array.from(radios).find((radio) => radio.checked);
+        const isSetValueEnabled = validateCb(inputName, checkedRadio.value);
+
+        if (!isSetValueEnabled) return;
+
+        data[inputName] = checkedRadio.value;
+        return;
+      }
+
+      if (input.type === 'file') {
+        const isSetValueEnabled = validateCb(inputName, input.files[0]);
+
+        if (!isSetValueEnabled) return;
+
+        data[inputName] = input.files[0];
+
+        return;
+      }
+
+      const isSetValueEnabled = validateCb(inputName, inputValue);
+
+      if (!isSetValueEnabled) return;
+
+      data[inputName] = inputValue;
+    }
+
+    const validateInputCb = (inputName, inputValue) => {
+      try {
+        const isCustomSetValueEnabled = this.options.customValidateByStep?.(
+          inputName,
+          inputValue
+        );
+
+        return isCustomSetValueEnabled ?? true;
+      } catch (err) {
+        // or we can THROW error
+        return false;
+      }
+    };
+
+    fieldBlocks.forEach((fieldBlock) => {
+      if (fieldBlock.classList.contains('_require')) {
+        const input = getInputFromWrapperBlock(fieldBlock);
+        if (!input) return;
+
+        setInputValue(input, validateInputCb);
+      } else {
+        const input = getInputFromWrapperBlock(fieldBlock);
+        const isValidByDefault = true;
+        setInputValue(input, () => isValidByDefault);
+      }
+    });
+
+    return { data, isValid: true };
+  }
+
   async handleSteps(e) {
     const target = e.target;
 
@@ -136,99 +227,8 @@ export class MultiFormService extends FormService {
       return input;
     }
 
-    const getValuesByStep = async (step) => {
-      const data = {};
-      let errors = 0;
-      const fieldBlocks = this.getAllFieldsByStep(step + 1);
-      let isValidStep = this.getValidateMultiForm();
-
-      fieldBlocks.forEach((field) => {
-        const input = getInputFromWrapperBlock(field);
-
-        if (!input) return;
-
-        const { error: validateError } = this.handleValidateInput(input);
-
-        errors += validateError;
-        isValidStep = !errors;
-      });
-
-      if (!isValidStep) {
-        return { data, isValid: false };
-      }
-
-      function setInputValue(
-        input,
-        validateCb = (inputName, inputValue) => {
-          return true; // by default
-        } // you must returned true or false for set input
-      ) {
-        const inputName = input.name;
-        const inputValue = input.value;
-
-        if (input.type === 'radio') {
-          const fieldBlock = input.closest('._field');
-          const radios = fieldBlock.querySelectorAll('input');
-          const checkedRadio = Array.from(radios).find(
-            (radio) => radio.checked
-          );
-          const isSetValueEnabled = validateCb(inputName, checkedRadio.value);
-
-          if (!isSetValueEnabled) return;
-
-          data[inputName] = checkedRadio.value;
-          return;
-        }
-
-        if (input.type === 'file') {
-          const isSetValueEnabled = validateCb(inputName, input.files[0]);
-
-          if (!isSetValueEnabled) return;
-
-          data[inputName] = input.files[0];
-
-          return;
-        }
-
-        const isSetValueEnabled = validateCb(inputName, inputValue);
-
-        if (!isSetValueEnabled) return;
-
-        data[inputName] = inputValue;
-      }
-
-      const validateInputCb = (inputName, inputValue) => {
-        try {
-          const isCustomSetValueEnabled = this.options.customValidateByStep?.(
-            inputName,
-            inputValue
-          );
-
-          return isCustomSetValueEnabled ?? true;
-        } catch (err) {
-          // or we can THROW error
-          return false;
-        }
-      };
-
-      fieldBlocks.forEach((fieldBlock) => {
-        if (fieldBlock.classList.contains('_require')) {
-          const input = getInputFromWrapperBlock(fieldBlock);
-          if (!input) return;
-
-          setInputValue(input, validateInputCb);
-        } else {
-          const input = getInputFromWrapperBlock(fieldBlock);
-          const isValidByDefault = true;
-          setInputValue(input, () => isValidByDefault);
-        }
-      });
-
-      return { data, isValid: true };
-    };
-
     if (submitBtn) {
-      const { isValid, data } = await getValuesByStep(this.currentStep);
+      const { isValid, data } = await this.getValuesByStep(this.currentStep);
 
       if (!isValid) return;
 
@@ -238,7 +238,7 @@ export class MultiFormService extends FormService {
     }
 
     if (nextPrev) {
-      const { isValid, data } = await getValuesByStep(this.currentStep);
+      const { isValid, data } = await this.getValuesByStep(this.currentStep);
 
       if (!isValid) return;
 
@@ -280,8 +280,42 @@ export class MultiFormService extends FormService {
       const step = formIdx + 1;
       const fieldBlocks = this.getAllFieldsByStep(step);
 
+      // this.inputFields.push({
+      //   [`step-${step}`]: [...fieldBlocks],
+      // });
+
       fieldBlocks.forEach((fieldBlock) => this.initForm(fieldBlock, initData));
     });
+  }
+
+  getData() {
+    let dataNodes = {};
+
+    this.$steps.forEach((_, formIdx) => {
+      const step = formIdx + 1;
+      const fieldBlocks = this.getAllFieldsByStep(step);
+
+      dataNodes = {
+        [`step-${step}`]: Array.from(fieldBlocks).map((fieldBlock) => {
+          const inputs = fieldBlock.querySelectorAll('input');
+
+          if (!inputs.length === 1) {
+            const checkedInput = inputs.filter((input) => !!input.checked);
+            return {
+              name: checkedInput?.name,
+              value: checkedInput?.value,
+            };
+          }
+
+          return {
+            name: inputs[0].name,
+            value: inputs[0].value,
+          };
+        }),
+      };
+    });
+
+    return dataNodes;
   }
 
   #setupMultiForm() {

@@ -24,6 +24,11 @@ async function initForm() {
       agree: 'on',
     },
   });
+
+  // setTimeout(() => {
+  //   console.log('here');
+  //   console.log('baseForm', baseForm.getData());
+  // }, 2000);
 }
 
 initForm();
